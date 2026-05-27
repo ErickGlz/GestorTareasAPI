@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestorTareasApp.Views.NuevaTareaView"
+             xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
+             Title="NuevaTareaView"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <viewmodels:TareasViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Margin="0,15,0,0">
+
+            <!-- HEADER -->
+            <Grid ColumnDefinitions="auto,*,auto" Margin="0,0,0,10">
+
+                <Button Text="&#8249;"
+                        Grid.Column="0"
+                        VerticalOptions="Center"
+                        TextColor="Black"
+                        Background="Transparent"
+                        Margin="5,0,0,0"
+                        Padding="0"
+                        FontSize="32"
+                        FontAttributes="Bold"
+                        Command="{Binding RegresarCommand}"/>
+
+                <Label Text="Nueva tarea"
+                       Grid.Column="1"
+                       VerticalOptions="Center"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       FontSize="22"
+                       Margin="10,0,0,0"
+                       FontFamily="open sans"/>
+
+                <Button Text="Guardar"
+                        Grid.Column="2"
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        TextColor="White"
+                        Background="#6970E6"
+                        Margin="0,0,15,0"
+                        Padding="10,0"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        FontFamily="open sans"
+                        HeightRequest="35"
+                        WidthRequest="80"
+                        CornerRadius="10"
+                        Command="{Binding CrearTareaCommand}"/>
+            </Grid>
+
+            <!-- MENSAJE ERROR -->
+            <Label Text="{Binding Mensaje}"
+                   TextColor="Red"
+                   FontSize="13"
+                   Margin="12,0,12,6"
+                   IsVisible="{Binding Mensaje, Converter={x:StaticResource StringToBoolConverter}}"/>
+
+            <!-- TITULO -->
+            <Label Text="Titulo"
+                   TextColor="Black"
+                   FontSize="16"
+                   FontFamily="open sans"
+                   Margin="12,8,10,6"/>
+
+            <Border Stroke="#E0E0E0" StrokeThickness="1"
+                    Padding="1" Margin="12,0,12,4">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+                <Entry Placeholder="Escriba el titulo aqui..."
+                       BackgroundColor="#FFFFFF"
+                       TextColor="Black"
+                       Text="{Binding NuevaTarea.Titulo}"/>
+            </Border>
+
+            <!-- DESCRIPCION -->
+            <Label Text="Descripcion"
+                   TextColor="Black"
+                   FontSize="16"
+                   FontFamily="open sans"
+                   Margin="12,10,10,4"/>
+
+            <Border Stroke="#E0E0E0" StrokeThickness="1"
+                    Padding="1" Margin="12,0,12,4">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+                <Editor Placeholder="Escriba la descripcion aqui..."
+                        BackgroundColor="#FFFFFF"
+                        TextColor="Black"
+                        HeightRequest="100"
+                        AutoSize="Disabled"
+                        Text="{Binding NuevaTarea.Descripcion}"/>
+            </Border>
+
+            <!-- FECHA -->
+            <Label Text="Fecha limite"
+                   TextColor="Black"
+                   FontSize="16"
+                   FontFamily="open sans"
+                   Margin="12,10,10,4"/>
+
+            <Border Stroke="#E0E0E0" StrokeThickness="1"
+                    Padding="1" Margin="12,0,12,4">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+                <DatePicker BackgroundColor="#FFFFFF"
+                            TextColor="Black"
+                            Date="{Binding NuevaTarea.FechaLimite}"/>
+            </Border>
+
+            <!-- PRIORIDAD -->
+            <Label Text="Prioridad"
+                   TextColor="Black"
+                   FontSize="16"
+                   FontFamily="open sans"
+                   Margin="12,10,10,4"/>
+
+            <Border Stroke="#E0E0E0" StrokeThickness="1"
+                    Padding="1" Margin="12,0,12,4">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+                <Picker TextColor="Black"
+                        BackgroundColor="#FFFFFF"
+                        ItemsSource="{Binding Prioridades}"
+                        SelectedItem="{Binding NuevaTarea.Prioridad}"/>
+            </Border>
+
+            <!-- IMAGEN OPCIONAL -->
+            <Label Text="Imagen (opcional)"
+                   TextColor="Black"
+                   FontSize="16"
+                   FontFamily="open sans"
+                   Margin="12,10,10,4"/>
+
+            <Border Stroke="#E0E0E0" StrokeThickness="1"
+                    Padding="12" Margin="12,0,12,20"
+                    BackgroundColor="#FAFAFA">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                    <Label Text="📷" FontSize="32" HorizontalOptions="Center"/>
+                    <Label Text="Toca para agregar imagen"
+                           TextColor="#AAAAAA"
+                           FontSize="13"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

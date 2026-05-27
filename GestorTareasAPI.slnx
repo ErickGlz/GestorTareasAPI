@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="GestorTareas/GestorTareasAPI.csproj" />
+  <Project Path="GestorTareasApp/GestorTareasApp.csproj" Id="7e7dd7c8-6dcb-4ff9-aa32-0d50805c811f" />
 </Solution>

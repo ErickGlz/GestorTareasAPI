@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestorTareasApp.Views.MisTareasTodasView"
+             xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
+             xmlns:models="clr-namespace:GestorTareasApp.Models"
+             Title="MisTareasTodasView"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <viewmodels:TareasViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="auto,auto,*,auto">
+
+        <!-- TITULO -->
+        <Label Text="Mis Tareas" TextColor="Black" Grid.Row="0"
+               FontAttributes="Bold" FontSize="30" Margin="8,8,0,8"/>
+
+        <!-- FILTROS -->
+        <Grid ColumnDefinitions="*,*,*" Grid.Row="1" Padding="5" ColumnSpacing="5">
+            <Button Text="Todas" Grid.Column="0"
+                    BackgroundColor="#686EE4" TextColor="White"
+                    BorderColor="#D8DADE" CornerRadius="20"
+                    FontSize="14" BorderWidth=".5"
+                    Margin="0" Padding="0" MaximumHeightRequest="35"/>
+            <Button Text="Pendientes" Grid.Column="1"
+                    BackgroundColor="White" TextColor="Black"
+                    BorderColor="#D8DADE" CornerRadius="20"
+                    FontSize="14" BorderWidth=".5"
+                    Margin="0" Padding="0" MaximumHeightRequest="35"/>
+            <Button Text="Completadas" Grid.Column="2"
+                    BackgroundColor="White" TextColor="Black"
+                    BorderColor="#D8DADE" CornerRadius="20"
+                    FontSize="14" BorderWidth=".5"
+                    Margin="0" Padding="0" MaximumHeightRequest="35"/>
+        </Grid>
+
+        <!-- LISTA DE TAREAS -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Tareas}"
+                        Margin="0,5,0,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TareaModel">
+                    <Border StrokeThickness=".1" Margin="15,8,15,8"
+                            Padding="0" BackgroundColor="White" Stroke="#D8DADE">
+                        <Border.Shadow>
+                            <Shadow Brush="Black" Offset="5,5" Opacity="0.1"/>
+                        </Border.Shadow>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12"/>
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="auto,*,auto"
+                              RowDefinitions="auto,auto,auto"
+                              RowSpacing="3" Padding="0,12,12,12">
+
+                            <!-- BARRA COLOR IZQUIERDA -->
+                            <BoxView Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                                     WidthRequest="4" HorizontalOptions="Start"
+                                     Margin="0,0,12,0"
+                                     Color="#D8DADE"/>
+
+                            <!-- TITULO -->
+                            <Label Text="{Binding Titulo}"
+                                   TextColor="Black" FontAttributes="Bold"
+                                   Grid.Column="1" Grid.Row="0"
+                                   FontSize="16" Margin="0,0,10,0"/>
+
+                            <!-- DESCRIPCION -->
+                            <Label Text="{Binding Descripcion}"
+                                   TextColor="#4A4A4A"
+                                   Grid.Column="1" Grid.Row="1" FontSize="14"/>
+
+                            <!-- FECHA -->
+                            <Label Text="{Binding FechaCreacion, StringFormat='{0:dd MMM yyyy}'}"
+                                   TextColor="DarkGray"
+                                   Grid.Column="1" Grid.Row="2"
+                                   Margin="0,2,0,0" FontSize="12"/>
+
+                            <!-- BADGE PRIORIDAD -->
+                            <Border Grid.Column="2" Grid.Row="0" Stroke="Transparent"
+                                    Padding="6,3">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="6"/>
+                                </Border.StrokeShape>
+                                <Label Text="{Binding Prioridad}"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"
+                                       FontSize="11" FontAttributes="Bold"/>
+                            </Border>
+
+                            <!-- BOTON EDITAR -->
+                            <Button Text="›" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2"
+                                    VerticalOptions="Center"
+                                    TextColor="DarkGray" Background="Transparent"
+                                    Margin="0" Padding="0" FontSize="24"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=IrEditarTareaCommand}"
+                                    CommandParameter="{Binding .}"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- NAVBAR INFERIOR -->
+        <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3"
+                VerticalOptions="End" Padding="0,8,0,10" BackgroundColor="#FDFDFD">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,-2" Opacity="0.05"/>
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
+
+                <Label Grid.Column="0" Text="☰" FontSize="24"
+                       HorizontalOptions="Center" VerticalOptions="Center"
+                       TextColor="Black"/>
+
+                <Label Grid.Column="1" Text="📅" FontSize="24"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <!-- BOTON + NEGRO -->
+                <Border Grid.Column="2" BackgroundColor="Black"
+                        HorizontalOptions="Center"
+                        WidthRequest="52" HeightRequest="52"
+                        Margin="0,-10,0,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14"/>
+                    </Border.StrokeShape>
+                    <Button Text="+" FontSize="28" TextColor="White"
+                            BackgroundColor="Transparent"
+                            Padding="0" Margin="0"
+                            Command="{Binding IrNuevaTareaCommand}"/>
+                </Border>
+
+                <Label Grid.Column="3" Text="🔔" FontSize="24"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                <Label Grid.Column="4" Text="⚙️" FontSize="24"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

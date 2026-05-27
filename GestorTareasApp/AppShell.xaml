@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="GestorTareasApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:GestorTareasApp"
+    xmlns:views="clr-namespace:GestorTareasApp.Views"
+    xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
+   FlyoutBehavior="Disabled"
+    NavBarIsVisible="False"
+    Title="GestorTareasApp">
+
+
+
+   
+            <ShellContent
+                ContentTemplate="{DataTemplate views:MisTareasTodasView}"
+                Route="MisTareasTodasView" />
+
+        
+            <ShellContent
+                ContentTemplate="{DataTemplate views:NuevaTareaView}"
+                Route="NuevaTareaView" />
+       
+
+</Shell>
