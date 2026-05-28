@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="GestorTareasApp.Views.MisTareasTodasView"
-             xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
+             x:Class="GestorTareasApp.Views.MisTareasCompletadasView"
              xmlns:models="clr-namespace:GestorTareasApp.Models"
-             Title="MisTareasTodasView"
-              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FAF9FE">
-
-
-
+             xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
+             Title="MisTareasCompletadasView">
     <Grid RowDefinitions="auto,auto,*,auto">
 
         <Label Text="Mis Tareas"
@@ -20,10 +15,41 @@
                Margin="8,8,0,8"
                FontFamily="open sans"/>
 
-        <Grid ColumnDefinitions="*,*,*" Grid.Row="1" Padding="5" ColumnSpacing="5">
+        <Grid ColumnDefinitions="*,*,*"
+              Grid.Row="1"
+              Padding="5"
+              ColumnSpacing="5">
 
             <Button Text="Todas"
                     Grid.Column="0"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    BorderColor="#D8DADE"
+                    WidthRequest="110"
+                    CornerRadius="20"
+                    FontSize="14"
+                    BorderWidth=".5"
+                    Margin="0"
+                    Padding="0"
+                    MaximumHeightRequest="35"
+                    Command="{Binding IrTodasCommand}"/>
+
+            <Button Text="Pendientes"
+                    Grid.Column="1"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    BorderColor="#D8DADE"
+                    WidthRequest="110"
+                    CornerRadius="20"
+                    FontSize="14"
+                    BorderWidth=".5"
+                    Margin="0"
+                    Padding="0"
+                    MaximumHeightRequest="35"
+                    Command="{Binding IrPendientesCommand}"/>
+
+            <Button Text="Completadas"
+                    Grid.Column="2"
                     BackgroundColor="#686EE4"
                     TextColor="White"
                     BorderColor="#D8DADE"
@@ -36,38 +62,11 @@
                     Padding="0"
                     MaximumHeightRequest="35"/>
 
-            <Button Text="Pendientes"
-                    Command="{Binding IrPendientesCommand}"
-                    Grid.Column="1"
-                    BackgroundColor="White"
-                    TextColor="Black"
-                    BorderColor="#D8DADE"
-                    WidthRequest="110"
-                    CornerRadius="20"
-                    FontSize="14"
-                    BorderWidth=".5"
-                    Margin="0"
-                    Padding="0"
-                    MaximumHeightRequest="35"/>
-
-            <Button Text="Completadas"
-                    Grid.Column="2"
-                    BackgroundColor="White"
-                    TextColor="Black"
-                    BorderColor="#D8DADE"
-                    WidthRequest="110"
-                    CornerRadius="20"
-                    FontSize="14"
-                    BorderWidth=".5"
-                    Margin="0"
-                    Padding="0"
-                    MaximumHeightRequest="35"/>
-
         </Grid>
 
         <CollectionView Grid.Row="2"
-                        ItemsSource="{Binding Tareas}"
-                        Margin="0,0,0,0">
+                        ItemsSource="{Binding TareasCompletadas}"
+                        Margin="0,5,0,0">
 
             <CollectionView.ItemTemplate>
 
@@ -144,7 +143,7 @@
                                    FontSize="14"
                                    FontFamily="open sans"/>
 
-                            <Label Text="{Binding FechaLimite, StringFormat='{0:dd MMM yyyy}'}"
+                            <Label Text="{Binding FechaCreacion, StringFormat='{0:dd MMM yyyy}'}"
                                    Grid.Column="1"
                                    Grid.Row="2"
                                    TextColor="DarkGray"
@@ -231,7 +230,7 @@
                                     Margin="0"
                                     Padding="0"
                                     FontSize="20"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IrEditarTareaCommand}"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=IrEditarTareaCommand}"
                                     CommandParameter="{Binding .}"/>
 
                         </Grid>
@@ -245,72 +244,67 @@
         </CollectionView>
 
         <Border StrokeThickness=".1"
-        Stroke="#D8DADE"
-        Grid.Row="3"
-        VerticalOptions="End"
-        Padding="0,0,0,10"
-        BackgroundColor="#FDFDFD">
+                Stroke="#D8DADE"
+                Grid.Row="3"
+                VerticalOptions="End"
+                Padding="0,0,0,10"
+                BackgroundColor="#FDFDFD">
 
             <Border.Shadow>
                 <Shadow Brush="Black"
-                Offset="5,5"
-                Opacity="0.1"/>
+                        Offset="5,5"
+                        Opacity="0.1"/>
             </Border.Shadow>
 
             <Grid ColumnDefinitions="*,*,*,*,*"
-          VerticalOptions="Center">
+                  VerticalOptions="Center">
 
-                <Button Grid.Column="0"
-                Text="☰"
-                FontSize="24"
-                TextColor="Black"
-                BackgroundColor="Transparent"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="0"
+                                     VerticalOptions="Center">
 
-                <Button Grid.Column="1"
-                Text="📅"
-                FontSize="24"
-                TextColor="Black"
-                BackgroundColor="Transparent"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+                    <Button Text="☰"
+                            FontSize="24"
+                            TextColor="Black"
+                            BackgroundColor="Transparent"/>
+                </VerticalStackLayout>
 
-                <Border Grid.Column="2"
-                BackgroundColor="#686EE4"
-                WidthRequest="55"
-                HeightRequest="55"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                Margin="0,-20,0,0">
+                <VerticalStackLayout Grid.Column="1"
+                                     VerticalOptions="Center">
 
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="27"/>
-                    </Border.StrokeShape>
+                    <Button Text="📅"
+                            FontSize="24"
+                            BackgroundColor="Transparent"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2"
+                                     VerticalOptions="Center">
 
                     <Button Text="+"
-                    FontSize="32"
-                    FontAttributes="Bold"
-                    TextColor="White"
-                    BackgroundColor="Transparent"
-                    Command="{Binding IrNuevaTareaCommand}"/>
-                </Border>
+                            FontSize="28"
+                            TextColor="White"
+                            BackgroundColor="#686EE4"
+                            WidthRequest="60"
+                            HeightRequest="60"
+                            CornerRadius="30"
+                            Command="{Binding IrNuevaTareaCommand}"/>
 
-                <Button Grid.Column="3"
-                Text="🔔"
-                FontSize="24"
-                TextColor="Black"
-                BackgroundColor="Transparent"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+                </VerticalStackLayout>
 
-                <Button Grid.Column="4"
-                Text="⚙️"
-                FontSize="24"
-                TextColor="Black"
-                BackgroundColor="Transparent"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="3"
+                                     VerticalOptions="Center">
+
+                    <Button Text="🔔"
+                            FontSize="24"
+                            BackgroundColor="Transparent"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="4"
+                                     VerticalOptions="Center">
+
+                    <Button Text="⚙"
+                            FontSize="24"
+                            BackgroundColor="Transparent"/>
+                </VerticalStackLayout>
 
             </Grid>
 

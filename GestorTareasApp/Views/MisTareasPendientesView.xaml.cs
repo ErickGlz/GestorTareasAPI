@@ -2,11 +2,12 @@ using GestorTareasApp.ViewModels;
 
 namespace GestorTareasApp.Views;
 
-public partial class NuevaTareaView : ContentPage
+public partial class MisTareasPendientesView : ContentPage
 {
-	public NuevaTareaView(TareasViewModel vm)
+	public MisTareasPendientesView(TareasViewModel vm)
 	{
 		InitializeComponent();
         BindingContext = vm;
+
     }
 }

@@ -2,13 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using GestorTareasApp.Models;
 using GestorTareasApp.Services;
-using GestorTareasApp.Views;
-using System;
-using System.Collections.Generic;
+using Microsoft.Maui.Storage;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Text;
-using System.Windows.Input;
 
 namespace GestorTareasApp.ViewModels
 {
@@ -17,6 +12,15 @@ namespace GestorTareasApp.ViewModels
         private readonly TareasService service;
 
         public ObservableCollection<TareaModel> Tareas { get; set; } = new();
+
+        public IEnumerable<TareaModel> TareasTodas =>
+            Tareas;
+
+        public IEnumerable<TareaModel> TareasPendientes =>
+            Tareas.Where(x => x.Completada == false);
+
+        public IEnumerable<TareaModel> TareasCompletadas =>
+            Tareas.Where(x => x.Completada == true);
 
         public List<string> Prioridades { get; set; } =
             new()
@@ -30,10 +34,10 @@ namespace GestorTareasApp.ViewModels
         private bool isLoading;
 
         [ObservableProperty]
-        private string imagenSeleccionada;
+        private string mensaje = "";
 
         [ObservableProperty]
-        private string mensaje = "";
+        private string imagenSeleccionada = "";
 
         [ObservableProperty]
         private TareaModel nuevaTarea = new();
@@ -42,41 +46,60 @@ namespace GestorTareasApp.ViewModels
         {
             service = new TareasService();
 
-            CargarTareas();
+            _ = CargarTareas();
         }
 
         [RelayCommand]
         public async Task CargarTareas()
         {
-            try
-            {
-                IsLoading = true;
+            IsLoading = true;
 
-                var lista = await service.GetTareas();
+            var lista = await service.GetTareas();
 
-                Tareas.Clear();
+            Tareas.Clear();
 
-                foreach (var item in lista)
-                {
-                    Tareas.Add(item);
-                }
-            }
-            catch (Exception ex)
+            foreach (var item in lista)
             {
-                Mensaje = ex.Message;
+                Tareas.Add(item);
             }
-            finally
-            {
-                IsLoading = false;
-            }
+
+            OnPropertyChanged(nameof(TareasTodas));
+            OnPropertyChanged(nameof(TareasPendientes));
+            OnPropertyChanged(nameof(TareasCompletadas));
+
+            IsLoading = false;
+        }
+        [RelayCommand]
+        public async Task IrPendientes()
+        {
+            await Shell.Current.GoToAsync("//MisTareasPendientesView");
         }
 
+        [RelayCommand]
+        public async Task IrCompletadas()
+        {
+            await Shell.Current.GoToAsync("//MisTareasCompletadasView");
+        }
+
+        [RelayCommand]
+        public async Task IrTodas()
+        {
+            await Shell.Current.GoToAsync("//MisTareasTodasView");
+        }
         [RelayCommand]
         public async Task IrNuevaTarea()
         {
             NuevaTarea = new TareaModel();
 
+            ImagenSeleccionada = "";
+
             await Shell.Current.GoToAsync("///NuevaTareaView");
+        }
+
+        [RelayCommand]
+        public async Task Regresar()
+        {
+            await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
 
         [RelayCommand]
@@ -87,105 +110,96 @@ namespace GestorTareasApp.ViewModels
 
             NuevaTarea = tarea;
 
+            ImagenSeleccionada = tarea.ImagenUrl;
+
             await Shell.Current.GoToAsync("///NuevaTareaView");
         }
 
         [RelayCommand]
         public async Task CrearTarea()
         {
-            try
+            bool resultado;
+
+            if (NuevaTarea.Id == 0)
             {
-                if (string.IsNullOrWhiteSpace(NuevaTarea.Titulo))
+                NuevaTarea.Completada = false;
+
+                NuevaTarea.FechaCreacion = DateTime.Now;
+
+                resultado = await service.CrearTarea(NuevaTarea);
+
+                if (!resultado)
                 {
-                    Mensaje = "Ingrese un título";
+                    Mensaje = "Error al crear tarea";
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(NuevaTarea.Descripcion))
-                {
-                    Mensaje = "Ingrese una descripción";
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(NuevaTarea.Prioridad))
-                {
-                    Mensaje = "Seleccione una prioridad";
-                    return;
-                }
-
-                if (NuevaTarea.Id == 0)
-                {
-                    NuevaTarea.Completada = false;
-
-                    NuevaTarea.FechaCreacion = DateTime.Now;
-
-                    NuevaTarea.ImagenUrl = "";
-
-                    await service.CrearTarea(NuevaTarea);
-
-                    Mensaje = "Tarea creada correctamente";
-                }
-                else
-                {
-                    await service.EditarTarea(NuevaTarea);
-
-                    Mensaje = "Tarea actualizada";
-                }
-
-                await CargarTareas();
-
-                NuevaTarea = new TareaModel();
-
-                await Shell.Current.GoToAsync("//MisTareasTodasView");
+                Mensaje = "Tarea creada correctamente";
             }
-            catch (Exception ex)
+            else
             {
-                Mensaje = ex.Message;
+                resultado = await service.EditarTarea(NuevaTarea);
+
+                if (!resultado)
+                {
+                    Mensaje = "Error al actualizar tarea";
+                    return;
+                }
+
+                Mensaje = "Tarea actualizada correctamente";
             }
+
+            await CargarTareas();
+
+            NuevaTarea = new TareaModel();
+
+            ImagenSeleccionada = "";
+
+            await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
 
         [RelayCommand]
         public async Task EliminarTarea(TareaModel tarea)
         {
-            try
+            if (tarea == null)
+                return;
+
+            bool confirm = await App.Current.MainPage.DisplayAlert(
+                "Confirmar",
+                $"¿Eliminar la tarea {tarea.Titulo}?",
+                "Sí",
+                "No");
+
+            if (!confirm)
+                return;
+
+            var resultado = await service.EliminarTarea(tarea.Id);
+
+            if (!resultado)
             {
-                bool confirm = await App.Current.MainPage.DisplayAlert(
-                    "Confirmar",
-                    $"¿Eliminar la tarea {tarea.Titulo}?",
-                    "Sí",
-                    "No");
-
-                if (!confirm)
-                    return;
-
-                await service.EliminarTarea(tarea.Id);
-
-                Tareas.Remove(tarea);
-
-                Mensaje = "Tarea eliminada";
+                Mensaje = "Error al eliminar tarea";
+                return;
             }
-            catch (Exception ex)
-            {
-                Mensaje = ex.Message;
-            }
+
+            Tareas.Remove(tarea);
+
+            OnPropertyChanged(nameof(TareasTodas));
+            OnPropertyChanged(nameof(TareasPendientes));
+            OnPropertyChanged(nameof(TareasCompletadas));
+
+            Mensaje = "Tarea eliminada";
         }
+
         [RelayCommand]
         public async Task SeleccionarImagen()
         {
-            try
-            {
-                var foto = await MediaPicker.PickPhotoAsync();
+            var foto = await MediaPicker.PickPhotoAsync();
 
-                if (foto != null)
-                {
-                    ImagenSeleccionada = foto.FullPath;
-
-                    NuevaTarea.ImagenUrl = foto.FileName;
-                }
-            }
-            catch (Exception ex)
+            if (foto != null)
             {
-                Mensaje = ex.Message;
+                ImagenSeleccionada = foto.FullPath;
+
+                NuevaTarea.ImagenUrl = foto.FullPath;
             }
         }
     }
