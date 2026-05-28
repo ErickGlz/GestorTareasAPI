@@ -13,11 +13,9 @@
 
     <Grid RowDefinitions="auto,auto,*,auto">
 
-        <!-- TITULO -->
         <Label Text="Mis Tareas" TextColor="Black" Grid.Row="0"
                FontAttributes="Bold" FontSize="30" Margin="8,8,0,8"/>
 
-        <!-- FILTROS -->
         <Grid ColumnDefinitions="*,*,*" Grid.Row="1" Padding="5" ColumnSpacing="5">
             <Button Text="Todas" Grid.Column="0"
                     BackgroundColor="#686EE4" TextColor="White"
@@ -36,7 +34,6 @@
                     Margin="0" Padding="0" MaximumHeightRequest="35"/>
         </Grid>
 
-        <!-- LISTA DE TAREAS -->
         <CollectionView Grid.Row="2"
                         ItemsSource="{Binding Tareas}"
                         Margin="0,5,0,0">
@@ -54,30 +51,25 @@
                               RowDefinitions="auto,auto,auto"
                               RowSpacing="3" Padding="0,12,12,12">
 
-                            <!-- BARRA COLOR IZQUIERDA -->
                             <BoxView Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
                                      WidthRequest="4" HorizontalOptions="Start"
                                      Margin="0,0,12,0"
                                      Color="#D8DADE"/>
 
-                            <!-- TITULO -->
                             <Label Text="{Binding Titulo}"
                                    TextColor="Black" FontAttributes="Bold"
                                    Grid.Column="1" Grid.Row="0"
                                    FontSize="16" Margin="0,0,10,0"/>
 
-                            <!-- DESCRIPCION -->
                             <Label Text="{Binding Descripcion}"
                                    TextColor="#4A4A4A"
                                    Grid.Column="1" Grid.Row="1" FontSize="14"/>
 
-                            <!-- FECHA -->
                             <Label Text="{Binding FechaCreacion, StringFormat='{0:dd MMM yyyy}'}"
                                    TextColor="DarkGray"
                                    Grid.Column="1" Grid.Row="2"
                                    Margin="0,2,0,0" FontSize="12"/>
 
-                            <!-- BADGE PRIORIDAD -->
                             <Border Grid.Column="2" Grid.Row="0" Stroke="Transparent"
                                     Padding="6,3">
                                 <Border.StrokeShape>
@@ -89,7 +81,6 @@
                                        FontSize="11" FontAttributes="Bold"/>
                             </Border>
 
-                            <!-- BOTON EDITAR -->
                             <Button Text="›" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2"
                                     VerticalOptions="Center"
                                     TextColor="DarkGray" Background="Transparent"
@@ -102,7 +93,6 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- NAVBAR INFERIOR -->
         <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3"
                 VerticalOptions="End" Padding="0,8,0,10" BackgroundColor="#FDFDFD">
             <Border.Shadow>
@@ -117,7 +107,6 @@
                 <Label Grid.Column="1" Text="📅" FontSize="24"
                        HorizontalOptions="Center" VerticalOptions="Center"/>
 
-                <!-- BOTON + NEGRO -->
                 <Border Grid.Column="2" BackgroundColor="Black"
                         HorizontalOptions="Center"
                         WidthRequest="52" HeightRequest="52"

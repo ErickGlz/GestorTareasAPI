@@ -30,6 +30,9 @@ namespace GestorTareasApp.ViewModels
         private bool isLoading;
 
         [ObservableProperty]
+        private string imagenSeleccionada;
+
+        [ObservableProperty]
         private string mensaje = "";
 
         [ObservableProperty]
@@ -133,7 +136,7 @@ namespace GestorTareasApp.ViewModels
 
                 NuevaTarea = new TareaModel();
 
-                await Shell.Current.GoToAsync("..");
+                await Shell.Current.GoToAsync("//MisTareasTodasView");
             }
             catch (Exception ex)
             {
@@ -160,6 +163,25 @@ namespace GestorTareasApp.ViewModels
                 Tareas.Remove(tarea);
 
                 Mensaje = "Tarea eliminada";
+            }
+            catch (Exception ex)
+            {
+                Mensaje = ex.Message;
+            }
+        }
+        [RelayCommand]
+        public async Task SeleccionarImagen()
+        {
+            try
+            {
+                var foto = await MediaPicker.PickPhotoAsync();
+
+                if (foto != null)
+                {
+                    ImagenSeleccionada = foto.FullPath;
+
+                    NuevaTarea.ImagenUrl = foto.FileName;
+                }
             }
             catch (Exception ex)
             {

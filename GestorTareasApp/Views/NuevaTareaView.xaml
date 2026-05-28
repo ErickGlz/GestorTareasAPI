@@ -13,7 +13,6 @@
     <ScrollView>
         <VerticalStackLayout Margin="0,15,0,0">
 
-            <!-- HEADER -->
             <Grid ColumnDefinitions="auto,*,auto" Margin="0,0,0,10">
 
                 <Button Text="&#8249;"
@@ -53,14 +52,12 @@
                         Command="{Binding CrearTareaCommand}"/>
             </Grid>
 
-            <!-- MENSAJE ERROR -->
             <Label Text="{Binding Mensaje}"
                    TextColor="Red"
                    FontSize="13"
                    Margin="12,0,12,6"
                    IsVisible="{Binding Mensaje, Converter={x:StaticResource StringToBoolConverter}}"/>
 
-            <!-- TITULO -->
             <Label Text="Titulo"
                    TextColor="Black"
                    FontSize="16"
@@ -78,7 +75,6 @@
                        Text="{Binding NuevaTarea.Titulo}"/>
             </Border>
 
-            <!-- DESCRIPCION -->
             <Label Text="Descripcion"
                    TextColor="Black"
                    FontSize="16"
@@ -98,7 +94,6 @@
                         Text="{Binding NuevaTarea.Descripcion}"/>
             </Border>
 
-            <!-- FECHA -->
             <Label Text="Fecha limite"
                    TextColor="Black"
                    FontSize="16"
@@ -115,7 +110,6 @@
                             Date="{Binding NuevaTarea.FechaLimite}"/>
             </Border>
 
-            <!-- PRIORIDAD -->
             <Label Text="Prioridad"
                    TextColor="Black"
                    FontSize="16"
@@ -133,25 +127,35 @@
                         SelectedItem="{Binding NuevaTarea.Prioridad}"/>
             </Border>
 
-            <!-- IMAGEN OPCIONAL -->
             <Label Text="Imagen (opcional)"
-                   TextColor="Black"
-                   FontSize="16"
-                   FontFamily="open sans"
-                   Margin="12,10,10,4"/>
+       TextColor="Black"
+       FontSize="16"
+       FontFamily="open sans"
+       Margin="12,10,10,4"/>
 
-            <Border Stroke="#E0E0E0" StrokeThickness="1"
-                    Padding="12" Margin="12,0,12,20"
-                    BackgroundColor="#FAFAFA">
+            <Border Stroke="#E0E0E0"
+        StrokeThickness="1"
+        Padding="12"
+        Margin="12,0,12,20"
+        BackgroundColor="#FAFAFA">
+
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="6"/>
                 </Border.StrokeShape>
-                <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
-                    <Label Text="📷" FontSize="32" HorizontalOptions="Center"/>
-                    <Label Text="Toca para agregar imagen"
-                           TextColor="#AAAAAA"
-                           FontSize="13"
-                           HorizontalOptions="Center"/>
+
+                <VerticalStackLayout HorizontalOptions="Center"
+                         Spacing="6">
+
+                    <Image Source="{Binding ImagenSeleccionada}"
+               HeightRequest="120"
+               WidthRequest="120"
+               Aspect="AspectFill"/>
+
+                    <Button Text="Seleccionar imagen"
+                Command="{Binding SeleccionarImagenCommand}"
+                BackgroundColor="#6970E6"
+                TextColor="White"/>
+
                 </VerticalStackLayout>
             </Border>
 
