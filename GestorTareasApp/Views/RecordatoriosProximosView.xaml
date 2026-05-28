@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestorTareasApp.Views.RecordatoriosProximosView"
+                          xmlns:models="clr-namespace:GestorTareasApp.Models"
+xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
+             Title="RecordatoriosProximosView">
+    <Grid RowDefinitions="auto,auto,*,auto">
+
+        <Label Text="Recordatorios"
+               TextColor="Black"
+               Grid.Row="0"
+               FontAttributes="Bold"
+               FontSize="30"
+               Margin="8,8,0,8"
+               FontFamily="open sans"/>
+
+        <Grid ColumnDefinitions="*,*"
+              Grid.Row="1"
+              Padding="5"
+              ColumnSpacing="5">
+
+            <Button Text="Proximos"
+                    Grid.Column="0"
+                    BackgroundColor="#686EE4"
+                    TextColor="White"
+                    BorderColor="#D8DADE"
+                    WidthRequest="160"
+                    CornerRadius="20"
+                    FontSize="14"
+                    BorderWidth=".5"
+                    FontAttributes="Bold"
+                    Margin="0"
+                    Padding="0"
+                    MaximumHeightRequest="35"/>
+
+            <Button Text="Todos"
+                    Grid.Column="1"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    BorderColor="#D8DADE"
+                    WidthRequest="160"
+                    CornerRadius="20"
+                    FontSize="14"
+                    BorderWidth=".5"
+                    Margin="0"
+                    Padding="0"
+                    MaximumHeightRequest="35"
+                    Command="{Binding IrRecordatoriosTodosCommand}"/>
+
+        </Grid>
+
+        <ScrollView Grid.Row="2">
+
+            <VerticalStackLayout>
+
+                <Label Text="Hoy"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       FontFamily="open sans"
+                       Margin="15,20,10,0"/>
+
+                <CollectionView ItemsSource="{Binding RecordatoriosHoy}"
+                                SelectionMode="None">
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate x:DataType="models:TareaModel">
+
+                            <Border StrokeThickness=".1"
+                                    Margin="15,10,15,10"
+                                    Padding="0"
+                                    BackgroundColor="White"
+                                    Stroke="#D8DADE">
+
+                                <Border.Shadow>
+                                    <Shadow Brush="Black"
+                                            Offset="5,5"
+                                            Opacity="0.1"/>
+                                </Border.Shadow>
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                </Border.StrokeShape>
+
+                                <Grid ColumnDefinitions="auto,*,auto"
+                                      RowDefinitions="auto,auto,auto"
+                                      RowSpacing="3"
+                                      Padding="0,12,12,12">
+
+                                    <BoxView Grid.Column="0"
+                                             Grid.Row="0"
+                                             Grid.RowSpan="3"
+                                             WidthRequest="4"
+                                             HorizontalOptions="Start"
+                                             Margin="0,0,12,0">
+
+                                        <BoxView.Triggers>
+
+                                            <DataTrigger TargetType="BoxView"
+                                                         Binding="{Binding Prioridad}"
+                                                         Value="Alta">
+                                                <Setter Property="Color"
+                                                        Value="#FCC0C1"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger TargetType="BoxView"
+                                                         Binding="{Binding Prioridad}"
+                                                         Value="Media">
+                                                <Setter Property="Color"
+                                                        Value="#F8D5AE"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger TargetType="BoxView"
+                                                         Binding="{Binding Prioridad}"
+                                                         Value="Baja">
+                                                <Setter Property="Color"
+                                                        Value="#CCFFCD"/>
+                                            </DataTrigger>
+
+                                        </BoxView.Triggers>
+
+                                    </BoxView>
+
+                                    <!-- TITULO -->
+                                    <Label Text="{Binding Titulo}"
+                                           TextColor="Black"
+                                           FontAttributes="Bold"
+                                           Grid.Column="1"
+                                           Grid.Row="0"
+                                           FontSize="16"
+                                           FontFamily="open sans"
+                                           Margin="0,0,10,0"/>
+
+                                    <Label Text="{Binding Descripcion}"
+                                           TextColor="#4A4A4A"
+                                           Grid.Column="1"
+                                           Grid.Row="1"
+                                           FontSize="14"
+                                           FontFamily="open sans"/>
+
+                                    <Label Text="{Binding FechaCreacion, StringFormat='{0:dd MMM yyyy}'}"
+                                           Grid.Column="1"
+                                           Grid.Row="2"
+                                           TextColor="DarkGray"
+                                           Margin="0,2,0,0"
+                                           FontSize="12"/>
+
+                                    <Border Grid.Column="2"
+                                            Grid.Row="0"
+                                            Stroke="Transparent"
+                                            Padding="8,3">
+
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="6"/>
+                                        </Border.StrokeShape>
+
+                                        <Border.Triggers>
+
+                                            <DataTrigger TargetType="Border"
+                                                         Binding="{Binding Prioridad}"
+                                                         Value="Alta">
+                                                <Setter Property="BackgroundColor"
+                                                        Value="#FCC0C1"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger TargetType="Border"
+                                                         Binding="{Binding Prioridad}"
+                                                         Value="Media">
+                                                <Setter Property="BackgroundColor"
+                                                        Value="#F8D5AE"/>
+                                            </DataTrigger>
+
+                                            <DataTrigger TargetType="Border"
+                                                         Binding="{Binding Prioridad}"
+                                                         Value="Baja">
+                                                <Setter Property="BackgroundColor"
+                                                        Value="#CCFFCD"/>
+                                            </DataTrigger>
+
+                                        </Border.Triggers>
+
+                                        <Label Text="{Binding Prioridad}"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"
+                                               FontSize="11"
+                                               FontFamily="open sans"
+                                               FontAttributes="Bold">
+
+                                            <Label.Triggers>
+
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Prioridad}"
+                                                             Value="Alta">
+                                                    <Setter Property="TextColor"
+                                                            Value="Red"/>
+                                                </DataTrigger>
+
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Prioridad}"
+                                                             Value="Media">
+                                                    <Setter Property="TextColor"
+                                                            Value="DarkOrange"/>
+                                                </DataTrigger>
+
+                                                <DataTrigger TargetType="Label"
+                                                             Binding="{Binding Prioridad}"
+                                                             Value="Baja">
+                                                    <Setter Property="TextColor"
+                                                            Value="DarkGreen"/>
+                                                </DataTrigger>
+
+                                            </Label.Triggers>
+
+                                        </Label>
+
+                                    </Border>
+
+                                    <Button Text=">"
+                                            Grid.Column="2"
+                                            Grid.Row="1"
+                                            Grid.RowSpan="2"
+                                            VerticalOptions="Center"
+                                            TextColor="DarkGray"
+                                            Background="Transparent"
+                                            Margin="0"
+                                            Padding="0"
+                                            FontSize="20"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=IrEditarTareaCommand}"
+                                            CommandParameter="{Binding .}"/>
+
+                                </Grid>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <Label Text="Esta semana"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       FontFamily="open sans"
+                       Margin="15,20,10,0"/>
+
+                <CollectionView ItemsSource="{Binding RecordatoriosSemana}"
+                                SelectionMode="None">
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate x:DataType="models:TareaModel">
+
+                            <Border StrokeThickness=".1"
+                                    Margin="15,10,15,10"
+                                    Padding="0"
+                                    BackgroundColor="White"
+                                    Stroke="#D8DADE">
+
+                                <Border.Shadow>
+                                    <Shadow Brush="Black"
+                                            Offset="5,5"
+                                            Opacity="0.1"/>
+                                </Border.Shadow>
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                </Border.StrokeShape>
+
+                                <Grid ColumnDefinitions="auto,*,auto"
+                                      RowDefinitions="auto,auto,auto"
+                                      RowSpacing="3"
+                                      Padding="0,12,12,12">
+
+                                    <BoxView Grid.Column="0"
+                                             Grid.Row="0"
+                                             Grid.RowSpan="3"
+                                             WidthRequest="4"
+                                             HorizontalOptions="Start"
+                                             Margin="0,0,12,0"
+                                             Color="#F8D5AE"/>
+
+                                    <Label Text="{Binding Titulo}"
+                                           TextColor="Black"
+                                           FontAttributes="Bold"
+                                           Grid.Column="1"
+                                           Grid.Row="0"
+                                           FontSize="16"
+                                           FontFamily="open sans"/>
+
+                                    <Label Text="{Binding Descripcion}"
+                                           TextColor="#4A4A4A"
+                                           Grid.Column="1"
+                                           Grid.Row="1"
+                                           FontSize="14"
+                                           FontFamily="open sans"/>
+
+                                    <Label Text="{Binding FechaCreacion, StringFormat='{0:dd MMM yyyy}'}"
+                                           Grid.Column="1"
+                                           Grid.Row="2"
+                                           TextColor="DarkGray"
+                                           FontSize="12"/>
+
+                                </Grid>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <Label Text="Mas adelante"
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       FontFamily="open sans"
+                       Margin="15,20,10,0"/>
+
+                <CollectionView ItemsSource="{Binding RecordatoriosFuturos}"
+                                SelectionMode="None">
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate x:DataType="models:TareaModel">
+
+                            <Border StrokeThickness=".1"
+                                    Margin="15,10,15,10"
+                                    Padding="0"
+                                    BackgroundColor="White"
+                                    Stroke="#D8DADE">
+
+                                <Border.Shadow>
+                                    <Shadow Brush="Black"
+                                            Offset="5,5"
+                                            Opacity="0.1"/>
+                                </Border.Shadow>
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                </Border.StrokeShape>
+
+                                <Grid ColumnDefinitions="auto,*,auto"
+                                      RowDefinitions="auto,auto,auto"
+                                      RowSpacing="3"
+                                      Padding="0,12,12,12">
+
+                                    <BoxView Grid.Column="0"
+                                             Grid.Row="0"
+                                             Grid.RowSpan="3"
+                                             WidthRequest="4"
+                                             HorizontalOptions="Start"
+                                             Margin="0,0,12,0"
+                                             Color="#CCFFCD"/>
+
+                                    <Label Text="{Binding Titulo}"
+                                           TextColor="Black"
+                                           FontAttributes="Bold"
+                                           Grid.Column="1"
+                                           Grid.Row="0"
+                                           FontSize="16"
+                                           FontFamily="open sans"/>
+
+                                    <Label Text="{Binding Descripcion}"
+                                           TextColor="#4A4A4A"
+                                           Grid.Column="1"
+                                           Grid.Row="1"
+                                           FontSize="14"
+                                           FontFamily="open sans"/>
+
+                                    <Label Text="{Binding FechaCreacion, StringFormat='{0:dd MMM yyyy}'}"
+                                           Grid.Column="1"
+                                           Grid.Row="2"
+                                           TextColor="DarkGray"
+                                           FontSize="12"/>
+
+                                </Grid>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+        <Border StrokeThickness=".1"
+                Stroke="#D8DADE"
+                Grid.Row="3"
+                VerticalOptions="End"
+                Padding="0,0,0,10"
+                BackgroundColor="#FDFDFD">
+
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                        Offset="5,5"
+                        Opacity="0.1"/>
+            </Border.Shadow>
+
+            <Grid ColumnDefinitions="*,*,*,*,*"
+                  VerticalOptions="Center">
+
+                <VerticalStackLayout Grid.Column="0"
+                                     VerticalOptions="Center">
+
+                    <Button ImageSource="menu1.png"
+                            BackgroundColor="Transparent"
+                            MaximumHeightRequest="50"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1"
+                                     VerticalOptions="Center">
+
+                    <Button ImageSource="calendario1.png"
+                            BackgroundColor="Transparent"
+                            MaximumHeightRequest="50"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2"
+                                     VerticalOptions="Center">
+
+                    <Button ImageSource="mas3.png"
+                            BackgroundColor="Transparent"
+                            MaximumHeightRequest="65"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            Command="{Binding IrNuevaTareaCommand}"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="3"
+                                     VerticalOptions="Center">
+
+                    <Button ImageSource="campana2.png"
+                            BackgroundColor="Transparent"
+                            MaximumHeightRequest="50"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="4"
+                                     VerticalOptions="Center">
+
+                    <Button ImageSource="ajustes1.png"
+                            BackgroundColor="Transparent"
+                            MaximumHeightRequest="50"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+</ContentPage>

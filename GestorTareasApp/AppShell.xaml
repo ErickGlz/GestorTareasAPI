@@ -27,6 +27,12 @@
     <ShellContent
    ContentTemplate="{DataTemplate views:MisTareasCompletadasView}"
    Route="MisTareasCompletadasView" />
+    <ShellContent
+    ContentTemplate="{DataTemplate views:RecordatoriosTodosView}"
+    Route="RecordatoriosTodosView" />
 
+    <ShellContent
+    ContentTemplate="{DataTemplate views:RecordatoriosProximosView}"
+    Route="RecordatoriosProximosView" />
 
 </Shell>

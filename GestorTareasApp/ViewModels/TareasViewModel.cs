@@ -21,7 +21,11 @@ namespace GestorTareasApp.ViewModels
 
         public IEnumerable<TareaModel> TareasCompletadas =>
             Tareas.Where(x => x.Completada == true);
+        public IEnumerable<TareaModel> RecordatoriosTodos =>
+    Tareas.OrderBy(x => x.FechaCreacion);
 
+        public IEnumerable<TareaModel> RecordatoriosProximos =>
+            Tareas.Where(x => x.FechaCreacion.Date <= DateTime.Now.Date.AddDays(3));
         public List<string> Prioridades { get; set; } =
             new()
             {
@@ -68,6 +72,17 @@ namespace GestorTareasApp.ViewModels
             OnPropertyChanged(nameof(TareasCompletadas));
 
             IsLoading = false;
+        }
+        [RelayCommand]
+        public async Task IrRecordatoriosTodos()
+        {
+            await Shell.Current.GoToAsync("//RecordatoriosTodosView");
+        }
+
+        [RelayCommand]
+        public async Task IrRecordatoriosProximos()
+        {
+            await Shell.Current.GoToAsync("//RecordatoriosProximosView");
         }
         [RelayCommand]
         public async Task IrPendientes()
