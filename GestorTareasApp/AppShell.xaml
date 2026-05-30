@@ -34,5 +34,9 @@
     <ShellContent
     ContentTemplate="{DataTemplate views:RecordatoriosProximosView}"
     Route="RecordatoriosProximosView" />
+    
+    <ShellContent
+        Route="CalendarioView"
+        ContentTemplate="{DataTemplate views:CalendarioView}" />
 
 </Shell>

@@ -88,6 +88,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\CalendarioView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\MisTareasCompletadasView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

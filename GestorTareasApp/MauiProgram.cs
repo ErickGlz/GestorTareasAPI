@@ -27,8 +27,8 @@ namespace GestorTareasApp
             builder.Services.AddSingleton<MisTareasPendientesView>();
             builder.Services.AddSingleton<MisTareasCompletadasView>();
             builder.Services.AddSingleton<RecordatoriosTodosView>();
-            builder.Services.AddSingleton<RecordatoriosProximosView>(); 
-
+            builder.Services.AddSingleton<RecordatoriosProximosView>();
+            builder.Services.AddSingleton<CalendarioView>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

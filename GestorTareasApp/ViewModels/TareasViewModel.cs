@@ -13,26 +13,22 @@ namespace GestorTareasApp.ViewModels
 
         public ObservableCollection<TareaModel> Tareas { get; set; } = new();
 
-        public IEnumerable<TareaModel> TareasTodas =>
-            Tareas;
+        public ObservableCollection<TareaModel> TareasPendientes { get; set; } = new();
 
-        public IEnumerable<TareaModel> TareasPendientes =>
-            Tareas.Where(x => x.Completada == false);
+        public ObservableCollection<TareaModel> TareasCompletadas { get; set; } = new();
 
-        public IEnumerable<TareaModel> TareasCompletadas =>
-            Tareas.Where(x => x.Completada == true);
-        public IEnumerable<TareaModel> RecordatoriosTodos =>
-    Tareas.OrderBy(x => x.FechaCreacion);
+        public ObservableCollection<TareaModel> RecordatoriosTodos { get; set; } = new();
 
-        public IEnumerable<TareaModel> RecordatoriosProximos =>
-            Tareas.Where(x => x.FechaCreacion.Date <= DateTime.Now.Date.AddDays(3));
+        public ObservableCollection<TareaModel> RecordatoriosProximos { get; set; } = new();
+
+        public ObservableCollection<TareaModel> TareasCalendario { get; set; } = new();
+
         public List<string> Prioridades { get; set; } =
-            new()
-            {
-                "Alta",
-                "Media",
-                "Baja"
-            };
+        [
+            "Alta",
+            "Media",
+            "Baja"
+        ];
 
         [ObservableProperty]
         private bool isLoading;
@@ -44,13 +40,23 @@ namespace GestorTareasApp.ViewModels
         private string imagenSeleccionada = "";
 
         [ObservableProperty]
+        private DateTime fechaSeleccionada = DateTime.Today;
+
+        [ObservableProperty]
         private TareaModel nuevaTarea = new();
 
+        [ObservableProperty]
+        private TareaModel tareaSeleccionada = new();
         public TareasViewModel()
         {
             service = new TareasService();
 
             _ = CargarTareas();
+        }
+
+        partial void OnFechaSeleccionadaChanged(DateTime value)
+        {
+            FiltrarCalendario();
         }
 
         [RelayCommand]
@@ -61,29 +67,66 @@ namespace GestorTareasApp.ViewModels
             var lista = await service.GetTareas();
 
             Tareas.Clear();
+            TareasPendientes.Clear();
+            TareasCompletadas.Clear();
+            RecordatoriosTodos.Clear();
+            RecordatoriosProximos.Clear();
 
-            foreach (var item in lista)
+            foreach (var tarea in lista)
             {
-                Tareas.Add(item);
+                Tareas.Add(tarea);
+
+                RecordatoriosTodos.Add(tarea);
+
+                if (!tarea.Completada)
+                {
+                    TareasPendientes.Add(tarea);
+                }
+
+                if (tarea.Completada)
+                {
+                    TareasCompletadas.Add(tarea);
+                }
+
+                if (tarea.FechaCreacion.Date <= DateTime.Today.AddDays(3))
+                {
+                    RecordatoriosProximos.Add(tarea);
+                }
             }
 
-            OnPropertyChanged(nameof(TareasTodas));
-            OnPropertyChanged(nameof(TareasPendientes));
-            OnPropertyChanged(nameof(TareasCompletadas));
+            FiltrarCalendario();
 
             IsLoading = false;
         }
-        [RelayCommand]
-        public async Task IrRecordatoriosTodos()
+
+        private void FiltrarCalendario()
         {
-            await Shell.Current.GoToAsync("//RecordatoriosTodosView");
+            TareasCalendario.Clear();
+
+            foreach (var tarea in Tareas)
+            {
+                if (tarea.FechaCreacion.Date == FechaSeleccionada.Date)
+                {
+                    TareasCalendario.Add(tarea);
+                }
+            }
+        }
+        [RelayCommand]
+        public async Task VerTarea(TareaModel tarea)
+        {
+            if (tarea == null)
+                return;
+
+            TareaSeleccionada = tarea;
+
+            await Shell.Current.GoToAsync("//VerTareaView");
+        }
+        [RelayCommand]
+        public async Task IrTodas()
+        {
+            await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
 
-        [RelayCommand]
-        public async Task IrRecordatoriosProximos()
-        {
-            await Shell.Current.GoToAsync("//RecordatoriosProximosView");
-        }
         [RelayCommand]
         public async Task IrPendientes()
         {
@@ -97,10 +140,23 @@ namespace GestorTareasApp.ViewModels
         }
 
         [RelayCommand]
-        public async Task IrTodas()
+        public async Task IrRecordatoriosTodos()
         {
-            await Shell.Current.GoToAsync("//MisTareasTodasView");
+            await Shell.Current.GoToAsync("//RecordatoriosTodosView");
         }
+
+        [RelayCommand]
+        public async Task IrRecordatoriosProximos()
+        {
+            await Shell.Current.GoToAsync("//RecordatoriosProximosView");
+        }
+
+        [RelayCommand]
+        public async Task IrCalendario()
+        {
+            await Shell.Current.GoToAsync("//CalendarioView");
+        }
+
         [RelayCommand]
         public async Task IrNuevaTarea()
         {
@@ -108,7 +164,7 @@ namespace GestorTareasApp.ViewModels
 
             ImagenSeleccionada = "";
 
-            await Shell.Current.GoToAsync("///NuevaTareaView");
+            await Shell.Current.GoToAsync("//NuevaTareaView");
         }
 
         [RelayCommand]
@@ -127,21 +183,18 @@ namespace GestorTareasApp.ViewModels
 
             ImagenSeleccionada = tarea.ImagenUrl;
 
-            await Shell.Current.GoToAsync("///NuevaTareaView");
+            await Shell.Current.GoToAsync("//NuevaTareaView");
         }
 
         [RelayCommand]
         public async Task CrearTarea()
         {
-            bool resultado;
-
             if (NuevaTarea.Id == 0)
             {
                 NuevaTarea.Completada = false;
-
                 NuevaTarea.FechaCreacion = DateTime.Now;
 
-                resultado = await service.CrearTarea(NuevaTarea);
+                var resultado = await service.CrearTarea(NuevaTarea);
 
                 if (!resultado)
                 {
@@ -153,7 +206,7 @@ namespace GestorTareasApp.ViewModels
             }
             else
             {
-                resultado = await service.EditarTarea(NuevaTarea);
+                var resultado = await service.EditarTarea(NuevaTarea);
 
                 if (!resultado)
                 {
@@ -179,13 +232,13 @@ namespace GestorTareasApp.ViewModels
             if (tarea == null)
                 return;
 
-            bool confirm = await App.Current.MainPage.DisplayAlert(
+            bool confirmar = await App.Current.MainPage.DisplayAlert(
                 "Confirmar",
                 $"¿Eliminar la tarea {tarea.Titulo}?",
                 "Sí",
                 "No");
 
-            if (!confirm)
+            if (!confirmar)
                 return;
 
             var resultado = await service.EliminarTarea(tarea.Id);
@@ -196,11 +249,7 @@ namespace GestorTareasApp.ViewModels
                 return;
             }
 
-            Tareas.Remove(tarea);
-
-            OnPropertyChanged(nameof(TareasTodas));
-            OnPropertyChanged(nameof(TareasPendientes));
-            OnPropertyChanged(nameof(TareasCompletadas));
+            await CargarTareas();
 
             Mensaje = "Tarea eliminada";
         }
