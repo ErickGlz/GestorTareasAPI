@@ -39,4 +39,17 @@
         Route="CalendarioView"
         ContentTemplate="{DataTemplate views:CalendarioView}" />
 
+    <ShellContent
+        Route="VerTareaView"
+        ContentTemplate="{DataTemplate views:VerTareaView}" />
+    <ShellContent
+     Route="EditarTareaView"
+     ContentTemplate="{DataTemplate views:EditarTareaView}" />
+    <ShellContent
+     Route="EliminarTareaView"
+     ContentTemplate="{DataTemplate views:EliminarTareaView}" />
+    <ShellContent
+    Route="AjustesView"
+    ContentTemplate="{DataTemplate views:AjustesView}" />
+
 </Shell>

@@ -23,6 +23,7 @@
         <Grid ColumnDefinitions="*,*,*" Grid.Row="1" Padding="5" ColumnSpacing="5">
 
             <Button Text="Todas"
+
                     Grid.Column="0"
                     BackgroundColor="#686EE4"
                     TextColor="White"
@@ -51,6 +52,7 @@
                     MaximumHeightRequest="35"/>
 
             <Button Text="Completadas"
+                    Command="{Binding IrCompletadasCommand}"
                     Grid.Column="2"
                     BackgroundColor="White"
                     TextColor="Black"
@@ -222,18 +224,18 @@
                             </Border>
 
                             <Button Text=">"
-                                    Grid.Column="2"
-                                    Grid.Row="1"
-                                    Grid.RowSpan="2"
-                                    VerticalOptions="Center"
-                                    TextColor="DarkGray"
-                                    Background="Transparent"
-                                    Margin="0"
-                                    Padding="0"
-                                    FontSize="20"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IrEditarTareaCommand}"
-                                    CommandParameter="{Binding .}"/>
-
+        Grid.Column="2"
+        Grid.Row="1"
+        Grid.RowSpan="2"
+        VerticalOptions="Center"
+        TextColor="DarkGray"
+        Background="Transparent"
+        Margin="0"
+        Padding="0"
+        FontSize="20"
+        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}},
+                          Path=BindingContext.VerTareaCommand}"
+        CommandParameter="{Binding .}" />
                         </Grid>
 
                     </Border>
@@ -243,7 +245,14 @@
             </CollectionView.ItemTemplate>
 
         </CollectionView>
-
+        
+        <ActivityIndicator       
+        Grid.RowSpan="4"
+        IsVisible="{Binding IsLoading}"
+        IsRunning="{Binding IsLoading}"
+        VerticalOptions="Center"
+        HorizontalOptions="Center"/>
+        
         <Border StrokeThickness=".1"
         Stroke="#D8DADE"
         Grid.Row="3"
@@ -307,6 +316,7 @@
                 VerticalOptions="Center"/>
 
                 <Button Grid.Column="4"
+                        Command="{Binding IrAjustesCommand}"
                 Text="⚙️"
                 FontSize="24"
                 TextColor="Black"

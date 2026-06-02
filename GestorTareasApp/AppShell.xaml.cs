@@ -7,7 +7,6 @@ namespace GestorTareasApp
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("NuevaTareaView", typeof(NuevaTareaView));
         }
     }
 }

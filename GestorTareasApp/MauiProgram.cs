@@ -1,4 +1,5 @@
-﻿using GestorTareasApp.Services;
+﻿using CommunityToolkit.Maui;
+using GestorTareasApp.Services;
 using GestorTareasApp.ViewModels;
 using GestorTareasApp.Views;
 using Microsoft.Extensions.Logging;
@@ -17,6 +18,14 @@ namespace GestorTareasApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+            builder.Services.AddSingleton(new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:7267/")
+            });
+            builder.UseMauiApp<App>()
+                .UseMauiCommunityToolkit();
+            builder.Services.AddSingleton<NotificacionesService>();
+
             builder.Services.AddSingleton<TareasService>();
 
             builder.Services.AddSingleton<TareasViewModel>();
@@ -29,6 +38,12 @@ namespace GestorTareasApp
             builder.Services.AddSingleton<RecordatoriosTodosView>();
             builder.Services.AddSingleton<RecordatoriosProximosView>();
             builder.Services.AddSingleton<CalendarioView>();
+            builder.Services.AddSingleton<VerTareaView>();
+            builder.Services.AddSingleton<EditarTareaView>();
+            builder.Services.AddSingleton<EliminarTareaView>();
+            builder.Services.AddSingleton<AjustesView>();
+
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

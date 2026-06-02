@@ -123,7 +123,6 @@ xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
 
                                     </BoxView>
 
-                                    <!-- TITULO -->
                                     <Label Text="{Binding Titulo}"
                                            TextColor="Black"
                                            FontAttributes="Bold"
@@ -239,7 +238,12 @@ xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
                     </CollectionView.ItemTemplate>
 
                 </CollectionView>
-
+                <ActivityIndicator       
+ Grid.RowSpan="4"
+ IsVisible="{Binding IsLoading}"
+ IsRunning="{Binding IsLoading}"
+ VerticalOptions="Center"
+ HorizontalOptions="Center"/> 
                 <Label Text="Esta semana"
                        TextColor="Black"
                        FontAttributes="Bold"

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GestorTareasApp.Views.EditarTareaView"
+             Title="EditarTareaView">
+    <ScrollView>
+
+        <VerticalStackLayout Margin="0,5,0,20"
+                             Spacing="4">
+
+            <Border BackgroundColor="White"
+                    Stroke="Transparent">
+
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="5,5"
+                            Opacity="0.06"/>
+                </Border.Shadow>
+
+                <Grid ColumnDefinitions="auto,*,auto"
+                      Margin="5">
+
+                    <Button Text="&#8249;"
+                            Grid.Column="0"
+                            VerticalOptions="Center"
+                            TextColor="Black"
+                            BackgroundColor="Transparent"
+                            FontSize="28"
+                            FontAttributes="Bold"
+                            Command="{Binding RegresarCommand}" />
+
+                    <Label Text="Editar tarea"
+                           Grid.Column="1"
+                           VerticalOptions="Center"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="22"
+                           Margin="10,0,0,0"/>
+
+                    <Button Text="Guardar"
+                            Grid.Column="2"
+                            VerticalOptions="Center"
+                            HorizontalOptions="End"
+                            TextColor="White"
+                            BackgroundColor="#6970E6"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            HeightRequest="30"
+                            WidthRequest="70"
+                            CornerRadius="10"
+                            Command="{Binding GuardarCambiosCommand}" />
+                </Grid>
+
+            </Border>
+
+            <Label Text="Título:"
+                   TextColor="Black"
+                   FontSize="16"
+                   Margin="12,12,10,6"/>
+
+            <Border Stroke="#E0E0E0"
+                    StrokeThickness="1"
+                    Padding="12,0"
+                    Margin="12,0,12,4">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+
+                <Entry Placeholder="Escriba el título aquí..."
+                       Text="{Binding NuevaTarea.Titulo}"
+                       BackgroundColor="#FFFFFF"
+                       TextColor="Black"/>
+            </Border>
+
+            <Label Text="Descripción:"
+                   TextColor="Black"
+                   FontSize="16"
+                   Margin="12,10,10,4"/>
+
+            <Border Stroke="#E0E0E0"
+                    StrokeThickness="1"
+                    Padding="12,6"
+                    Margin="12,0,12,4">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+
+                <Entry Placeholder="Escriba la descripción aquí..."
+                       Text="{Binding NuevaTarea.Descripcion}"
+                       BackgroundColor="#FFFFFF"
+                       TextColor="Black"
+                       HeightRequest="100"/>
+            </Border>
+
+            <Label Text="Fecha límite:"
+                   TextColor="Black"
+                   FontSize="16"
+                   Margin="12,10,10,4"/>
+
+            <Border Stroke="#E0E0E0"
+                    StrokeThickness="1"
+                    Padding="12,0"
+                    Margin="12,0,12,4">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+
+                <DatePicker Date="{Binding NuevaTarea.FechaLimite}"
+                            BackgroundColor="#FFFFFF"
+                            TextColor="Black"/>
+            </Border>
+
+            <Label Text="Prioridad:"
+                   TextColor="Black"
+                   FontSize="16"
+                   Margin="12,10,10,4"/>
+
+            <Border Stroke="#E0E0E0"
+                    StrokeThickness="1"
+                    Padding="12,0"
+                    Margin="12,0,12,4">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+
+                <Picker ItemsSource="{Binding Prioridades}"
+                        SelectedItem="{Binding NuevaTarea.Prioridad}"
+                        TextColor="Black"/>
+            </Border>
+
+            <Label Text="Imagen (opcional):"
+                   TextColor="Black"
+                   FontSize="16"
+                   Margin="12,10,10,4"/>
+
+            <Button Text="Seleccionar Imagen"
+                    Margin="12,0"
+                    Command="{Binding SeleccionarImagenCommand}" />
+
+            <Border Margin="12"
+                    Stroke="#E0E0E0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6"/>
+                </Border.StrokeShape>
+
+                <Image Source="{Binding NuevaTarea.ImagenUrl}"
+                       HeightRequest="220"
+                       Aspect="AspectFit"/>
+            </Border>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>

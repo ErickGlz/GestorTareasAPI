@@ -10,41 +10,39 @@ namespace GestorTareasApp.Services
     {
         private readonly HttpClient httpClient;
 
-        private string url = "https://localhost:7267/api/tareas";
-
-        public TareasService()
+        public TareasService(HttpClient httpClient)
         {
-            httpClient = new HttpClient();
+            this.httpClient = httpClient;
         }
 
         public async Task<List<TareaModel>> GetTareas()
         {
-            var response = await httpClient
-                .GetFromJsonAsync<List<TareaModel>>(url);
+            var response =
+                await httpClient.GetFromJsonAsync<List<TareaModel>>("api/tareas");
 
             return response ?? new List<TareaModel>();
         }
 
         public async Task<bool> CrearTarea(TareaModel tarea)
         {
-            var response = await httpClient
-                .PostAsJsonAsync(url, tarea);
+            var response =
+                await httpClient.PostAsJsonAsync("api/tareas", tarea);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> EditarTarea(TareaModel tarea)
         {
-            var response = await httpClient
-                .PutAsJsonAsync(url, tarea);
+            var response =
+                await httpClient.PutAsJsonAsync("api/tareas", tarea);
 
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> EliminarTarea(int id)
         {
-            var response = await httpClient
-                .DeleteAsync($"{url}/{id}");
+            var response =
+                await httpClient.DeleteAsync($"api/tareas/{id}");
 
             return response.IsSuccessStatusCode;
         }

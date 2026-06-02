@@ -10,6 +10,7 @@ namespace GestorTareasApp.ViewModels
     public partial class TareasViewModel : ObservableObject
     {
         private readonly TareasService service;
+        private readonly NotificacionesService notificacionesService;
 
         public ObservableCollection<TareaModel> Tareas { get; set; } = new();
 
@@ -23,6 +24,7 @@ namespace GestorTareasApp.ViewModels
 
         public ObservableCollection<TareaModel> TareasCalendario { get; set; } = new();
 
+
         public List<string> Prioridades { get; set; } =
         [
             "Alta",
@@ -32,7 +34,8 @@ namespace GestorTareasApp.ViewModels
 
         [ObservableProperty]
         private bool isLoading;
-
+        [ObservableProperty]
+        private bool notificacionesActivadas = true;
         [ObservableProperty]
         private string mensaje = "";
 
@@ -47,9 +50,13 @@ namespace GestorTareasApp.ViewModels
 
         [ObservableProperty]
         private TareaModel tareaSeleccionada = new();
-        public TareasViewModel()
+        public TareasViewModel(
+        TareasService service,
+        NotificacionesService notificacionesService)
         {
-            service = new TareasService();
+            this.service = service;
+            this.notificacionesService = notificacionesService;
+            this.notificacionesService = notificacionesService;
 
             _ = CargarTareas();
         }
@@ -112,6 +119,18 @@ namespace GestorTareasApp.ViewModels
             }
         }
         [RelayCommand]
+        public async Task IrEditarTarea(TareaModel tarea)
+        {
+            if (tarea == null)
+                return;
+
+            NuevaTarea = tarea;
+
+            ImagenSeleccionada = tarea.ImagenUrl;
+
+            await Shell.Current.GoToAsync("//NuevaTareaView");
+        }
+        [RelayCommand]
         public async Task VerTarea(TareaModel tarea)
         {
             if (tarea == null)
@@ -166,66 +185,16 @@ namespace GestorTareasApp.ViewModels
 
             await Shell.Current.GoToAsync("//NuevaTareaView");
         }
-
+        [RelayCommand]
+        public async Task IrAjustes()
+        {
+            await Shell.Current.GoToAsync("//AjustesView");
+        }
         [RelayCommand]
         public async Task Regresar()
         {
             await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
-
-        [RelayCommand]
-        public async Task IrEditarTarea(TareaModel tarea)
-        {
-            if (tarea == null)
-                return;
-
-            NuevaTarea = tarea;
-
-            ImagenSeleccionada = tarea.ImagenUrl;
-
-            await Shell.Current.GoToAsync("//NuevaTareaView");
-        }
-
-        [RelayCommand]
-        public async Task CrearTarea()
-        {
-            if (NuevaTarea.Id == 0)
-            {
-                NuevaTarea.Completada = false;
-                NuevaTarea.FechaCreacion = DateTime.Now;
-
-                var resultado = await service.CrearTarea(NuevaTarea);
-
-                if (!resultado)
-                {
-                    Mensaje = "Error al crear tarea";
-                    return;
-                }
-
-                Mensaje = "Tarea creada correctamente";
-            }
-            else
-            {
-                var resultado = await service.EditarTarea(NuevaTarea);
-
-                if (!resultado)
-                {
-                    Mensaje = "Error al actualizar tarea";
-                    return;
-                }
-
-                Mensaje = "Tarea actualizada correctamente";
-            }
-
-            await CargarTareas();
-
-            NuevaTarea = new TareaModel();
-
-            ImagenSeleccionada = "";
-
-            await Shell.Current.GoToAsync("//MisTareasTodasView");
-        }
-
         [RelayCommand]
         public async Task EliminarTarea(TareaModel tarea)
         {
@@ -253,6 +222,184 @@ namespace GestorTareasApp.ViewModels
 
             Mensaje = "Tarea eliminada";
         }
+        [RelayCommand]
+        public async Task EliminarTareaSeleccionada()
+        {
+            if (TareaSeleccionada == null)
+                return;
+
+            bool confirmar = await App.Current.MainPage.DisplayAlert(
+                "Confirmar",
+                $"¿Eliminar la tarea {TareaSeleccionada.Titulo}?",
+                "Sí",
+                "No");
+
+            if (!confirmar)
+                return;
+
+            var resultado = await service.EliminarTarea(TareaSeleccionada.Id);
+
+            if (!resultado)
+            {
+                Mensaje = "Error al eliminar tarea";
+                return;
+            }
+
+            await CargarTareas();
+
+            await Shell.Current.GoToAsync("//MisTareasTodasView");
+        }
+        [RelayCommand]
+        public async Task AbrirEditarTarea()
+        {
+            if (TareaSeleccionada == null)
+                return;
+
+            NuevaTarea = new TareaModel
+            {
+                Id = TareaSeleccionada.Id,
+                Titulo = TareaSeleccionada.Titulo,
+                Descripcion = TareaSeleccionada.Descripcion,
+                FechaLimite = TareaSeleccionada.FechaLimite,
+                Prioridad = TareaSeleccionada.Prioridad,
+                Completada = TareaSeleccionada.Completada,
+                ImagenUrl = TareaSeleccionada.ImagenUrl,
+                FechaCreacion = TareaSeleccionada.FechaCreacion
+            };
+
+            ImagenSeleccionada = NuevaTarea.ImagenUrl;
+
+            await Shell.Current.GoToAsync("//EditarTareaView");
+        }
+
+        [RelayCommand]
+        public async Task GuardarCambios()
+        {
+            if (string.IsNullOrWhiteSpace(NuevaTarea.Titulo))
+            {
+                Mensaje = "Ingrese un título";
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(NuevaTarea.Descripcion))
+            {
+                Mensaje = "Ingrese una descripción";
+                return;
+            }
+
+            if (NuevaTarea.FechaLimite < DateTime.Today)
+            {
+                Mensaje = "La fecha límite no puede ser anterior a hoy";
+                return;
+            }
+
+            var resultado = await service.EditarTarea(NuevaTarea);
+
+            if (!resultado)
+            {
+                Mensaje = "Error al actualizar tarea";
+                await notificacionesService.MostrarToast(Mensaje);
+                return;
+            }
+
+            await CargarTareas();
+
+            TareaSeleccionada = NuevaTarea;
+
+            Mensaje = "Tarea actualizada correctamente";
+            await notificacionesService.MostrarToast(Mensaje);
+            await Shell.Current.GoToAsync("//VerTareaView");
+        }
+        [RelayCommand]
+        public async Task CompletarTarea()
+        {
+            if (TareaSeleccionada == null)
+            return;
+
+            TareaSeleccionada.Completada = true;
+
+            var resultado = await service.EditarTarea(TareaSeleccionada);
+
+            if (!resultado)
+            {
+                Mensaje = "Error al completar la tarea";
+                await notificacionesService.MostrarToast(Mensaje);
+                return;
+            }
+
+            await CargarTareas();
+
+            Mensaje = "Tarea completada";
+            await notificacionesService.MostrarToast(Mensaje);
+        }
+        [RelayCommand]
+        public async Task CrearTarea()
+        {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                await notificacionesService.MostrarToast("Sin conexión a Internet");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(NuevaTarea.Titulo))
+            {
+                Mensaje = "Ingrese un título";
+                await notificacionesService.MostrarToast(Mensaje);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(NuevaTarea.Descripcion))
+            {
+                Mensaje = "Ingrese una descripción";
+
+                return;
+            }
+
+            if (NuevaTarea.FechaLimite < DateTime.Today)
+            {
+                Mensaje = "La fecha límite no puede ser anterior a hoy";
+                return;
+            }
+
+            if (NuevaTarea.Id == 0)
+            {
+                NuevaTarea.Completada = false;
+                NuevaTarea.FechaCreacion = DateTime.Now;
+
+                var resultado = await service.CrearTarea(NuevaTarea);
+
+                if (!resultado)
+                {
+                    Mensaje = "Error al crear tarea";
+                    return;
+                }
+
+                Mensaje = "Tarea creada correctamente";
+                await notificacionesService.MostrarToast(Mensaje);
+            }
+            else
+            {
+                var resultado = await service.EditarTarea(NuevaTarea);
+
+                if (!resultado)
+                {
+                    Mensaje = "Error al actualizar tarea";
+                    await notificacionesService.MostrarToast(Mensaje);
+                    return;
+                }
+
+                Mensaje = "Tarea actualizada correctamente";
+                await notificacionesService.MostrarToast(Mensaje);
+            }
+
+            await CargarTareas();
+
+            NuevaTarea = new TareaModel();
+
+            ImagenSeleccionada = "";
+
+            await Shell.Current.GoToAsync("//MisTareasTodasView");
+        }
+
 
         [RelayCommand]
         public async Task SeleccionarImagen()
@@ -264,6 +411,18 @@ namespace GestorTareasApp.ViewModels
                 ImagenSeleccionada = foto.FullPath;
 
                 NuevaTarea.ImagenUrl = foto.FullPath;
+            }
+        }
+        [RelayCommand]
+        public async Task CambiarNotificaciones()
+        {
+            if (NotificacionesActivadas)
+            {
+                await notificacionesService.MostrarToast("Notificaciones activadas");
+            }
+            else
+            {
+                await notificacionesService.MostrarToast("Notificaciones desactivadas");
             }
         }
     }

@@ -242,7 +242,12 @@
             </CollectionView.ItemTemplate>
 
         </CollectionView>
-
+        <ActivityIndicator       
+ Grid.RowSpan="4"
+ IsVisible="{Binding IsLoading}"
+ IsRunning="{Binding IsLoading}"
+ VerticalOptions="Center"
+ HorizontalOptions="Center"/>
         <Border StrokeThickness=".1"
                 Stroke="#D8DADE"
                 Grid.Row="3"
@@ -302,6 +307,7 @@
                                      VerticalOptions="Center">
 
                     <Button Text="⚙"
+                            Command="{Binding IrAjustesCommand}"                        
                             FontSize="24"
                             BackgroundColor="Transparent"/>
                 </VerticalStackLayout>
