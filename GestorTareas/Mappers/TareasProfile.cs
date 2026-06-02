@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GestorTareas.DTOs.Tareas;
-using GestorTareas.Models.Entities;
+using GestorTareasAPI.Models.Entities;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GestorTareasAPI.Mappers

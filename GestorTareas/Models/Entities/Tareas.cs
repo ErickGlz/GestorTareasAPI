@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GestorTareas.Models.Entities;
+namespace GestorTareasAPI.Models.Entities;
 
 public partial class Tareas
 {
@@ -20,4 +20,6 @@ public partial class Tareas
     public string? ImagenUrl { get; set; }
 
     public DateTime? FechaCreacion { get; set; }
+
+    public int UsuarioId { get; set; }
 }

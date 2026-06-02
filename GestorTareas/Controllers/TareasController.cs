@@ -1,11 +1,14 @@
 ﻿using FluentValidation;
 using GestorTareas.DTOs.Tareas;
 using GestorTareasAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GestorTareasAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TareasController : ControllerBase
@@ -20,9 +23,12 @@ namespace GestorTareasAPI.Controllers
         [HttpGet]
         public IActionResult GetTareas()
         {
-            var tareas = service.GetAll();
+            var usuarioId = int.Parse(
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            if (tareas == null || !tareas.Any())
+            var tareas = service.GetAll(usuarioId);
+
+            if (!tareas.Any())
             {
                 return NotFound();
             }
@@ -33,7 +39,10 @@ namespace GestorTareasAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult GetTarea(int id)
         {
-            var tarea = service.GetById(id);
+            var usuarioId = int.Parse(
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var tarea = service.GetById(id, usuarioId);
 
             if (tarea == null)
             {
@@ -42,13 +51,15 @@ namespace GestorTareasAPI.Controllers
 
             return Ok(tarea);
         }
-
         [HttpPost]
         public IActionResult CrearTarea(CrearTareaDTO dto)
         {
             try
             {
-                service.Insert(dto);
+                var usuarioId = int.Parse(
+                    User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+                service.Insert(dto, usuarioId);
 
                 return Ok();
             }
@@ -67,37 +78,33 @@ namespace GestorTareasAPI.Controllers
         [HttpPut]
         public IActionResult EditarTarea(EditarTareaDTO dto)
         {
-            try
-            {
-                service.Update(dto);
+            var usuarioId = int.Parse(
+       User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-                return Ok();
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(
-                    ex.Errors.Select(x => x.ErrorMessage)
-                );
-            }
-            catch (KeyNotFoundException)
+            var resultado = service.Update(dto, usuarioId);
+
+            if (!resultado)
             {
                 return NotFound();
             }
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public IActionResult EliminarTarea(int id)
         {
-            try
-            {
-                service.Delete(id);
+            var usuarioId = int.Parse(
+      User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-                return Ok();
-            }
-            catch (KeyNotFoundException)
+            var resultado = service.Delete(id, usuarioId);
+
+            if (!resultado)
             {
                 return NotFound();
             }
+
+            return Ok();
         }
     }
 }

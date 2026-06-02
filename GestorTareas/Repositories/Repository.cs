@@ -1,15 +1,15 @@
-﻿using GestorTareas.Models.Entities;
+﻿using GestorTareasAPI.Models.Entities;
 
-namespace GestorTareas.Repositories
+namespace GestorTareasAPI.Repositories
 {
     public class Repository<T> where T : class
     {
-        public Repository(RegistroTareasContext context)
+        public Repository(RegistrotareasContext context)
         {
             Context = context;
         }
 
-        public RegistroTareasContext Context { get; }
+        public RegistrotareasContext Context { get; }
 
         public IEnumerable<T> GetAll()
         {

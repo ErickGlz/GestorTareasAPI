@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
-namespace GestorTareas.Models.Entities;
+namespace GestorTareasAPI.Models.Entities;
 
-public partial class RegistroTareasContext : DbContext
+public partial class RegistrotareasContext : DbContext
 {
-    public RegistroTareasContext()
+    public RegistrotareasContext()
     {
     }
 
-    public RegistroTareasContext(DbContextOptions<RegistroTareasContext> options)
+    public RegistrotareasContext(DbContextOptions<RegistrotareasContext> options)
         : base(options)
     {
     }
 
     public virtual DbSet<Tareas> Tareas { get; set; }
 
-   
+    public virtual DbSet<Usuarios> Usuarios { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,6 +41,22 @@ public partial class RegistroTareasContext : DbContext
             entity.Property(e => e.ImagenUrl).HasMaxLength(300);
             entity.Property(e => e.Prioridad).HasMaxLength(20);
             entity.Property(e => e.Titulo).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<Usuarios>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("usuarios");
+
+            entity.HasIndex(e => e.Correo, "Correo").IsUnique();
+
+            entity.Property(e => e.Contrasena).HasMaxLength(255);
+            entity.Property(e => e.Correo).HasMaxLength(150);
+            entity.Property(e => e.FechaRegistro)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Nombre).HasMaxLength(100);
         });
 
         OnModelCreatingPartial(modelBuilder);
