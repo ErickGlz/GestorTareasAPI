@@ -15,52 +15,53 @@
                Margin="8,8,0,8"
                FontFamily="open sans"/>
 
-        <Grid ColumnDefinitions="*,*,*"
-              Grid.Row="1"
-              Padding="5"
-              ColumnSpacing="5">
+        <Grid ColumnDefinitions="*,*,*" Grid.Row="1" Padding="5" ColumnSpacing="5">
 
             <Button Text="Todas"
-                    Grid.Column="0"
-                    BackgroundColor="White"
-                    TextColor="Black"
-                    BorderColor="#D8DADE"
-                    WidthRequest="110"
-                    CornerRadius="20"
-                    FontSize="14"
-                    BorderWidth=".5"
-                    Margin="0"
-                    Padding="0"
-                    MaximumHeightRequest="35"
-                    Command="{Binding IrTodasCommand}"/>
+            Command="{Binding IrTodasCommand}"
+            Grid.Column="0"
+            BackgroundColor="White"
+            TextColor="Black"
+            BorderColor="#D8DADE"
+            WidthRequest="110"
+            CornerRadius="20"
+            FontSize="14"
+            BorderWidth=".5"
+            FontAttributes="Bold"
+            VerticalOptions="Center"
+            Margin="0"
+            Padding="0"
+            MaximumHeightRequest="35"/>
 
             <Button Text="Pendientes"
-                    Grid.Column="1"
-                    BackgroundColor="White"
-                    TextColor="Black"
-                    BorderColor="#D8DADE"
-                    WidthRequest="110"
-                    CornerRadius="20"
-                    FontSize="14"
-                    BorderWidth=".5"
-                    Margin="0"
-                    Padding="0"
-                    MaximumHeightRequest="35"
-                    Command="{Binding IrPendientesCommand}"/>
+            Command="{Binding IrPendientesCommand}"
+            Grid.Column="1"
+            BackgroundColor="White"
+            TextColor="Black"
+            BorderColor="#D8DADE"
+            WidthRequest="110"
+            CornerRadius="20"
+            FontSize="14"
+            BorderWidth=".5"
+            VerticalOptions="Center"
+            Margin="0"
+            Padding="0"
+            MaximumHeightRequest="35"/>
 
             <Button Text="Completadas"
-                    Grid.Column="2"
-                    BackgroundColor="#686EE4"
-                    TextColor="White"
-                    BorderColor="#D8DADE"
-                    WidthRequest="110"
-                    CornerRadius="20"
-                    FontSize="14"
-                    BorderWidth=".5"
-                    FontAttributes="Bold"
-                    Margin="0"
-                    Padding="0"
-                    MaximumHeightRequest="35"/>
+            Command="{Binding IrCompletadasCommand}"
+            Grid.Column="2"
+            BackgroundColor="#686EE4"
+            TextColor="White"
+            BorderColor="#D8DADE"
+            WidthRequest="110"
+            CornerRadius="20"
+            FontSize="14"
+            BorderWidth=".5"
+            VerticalOptions="Center"
+            Margin="0"
+            Padding="0"
+            MaximumHeightRequest="35"/>
 
         </Grid>
 
@@ -248,72 +249,27 @@
  IsRunning="{Binding IsLoading}"
  VerticalOptions="Center"
  HorizontalOptions="Center"/>
-        <Border StrokeThickness=".1"
-                Stroke="#D8DADE"
-                Grid.Row="3"
-                VerticalOptions="End"
-                Padding="0,0,0,10"
-                BackgroundColor="#FDFDFD">
-
+        <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3" VerticalOptions="End" Padding="0,0,0,10" BackgroundColor="#FDFDFD">
             <Border.Shadow>
-                <Shadow Brush="Black"
-                        Offset="5,5"
-                        Opacity="0.1"/>
+                <Shadow Brush="Black" Offset="5,5" Opacity="0.1"></Shadow>
             </Border.Shadow>
-
-            <Grid ColumnDefinitions="*,*,*,*,*"
-                  VerticalOptions="Center">
-
-                <VerticalStackLayout Grid.Column="0"
-                                     VerticalOptions="Center">
-
-                    <Button Text="☰"
-                            FontSize="24"
-                            TextColor="Black"
-                            BackgroundColor="Transparent"/>
+            <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="1"
-                                     VerticalOptions="Center">
-
-                    <Button Text="📅"
-                            FontSize="24"
-                            BackgroundColor="Transparent"/>
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                    <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="2"
-                                     VerticalOptions="Center">
-
-                    <Button Text="+"
-                            FontSize="28"
-                            TextColor="White"
-                            BackgroundColor="#686EE4"
-                            WidthRequest="60"
-                            HeightRequest="60"
-                            CornerRadius="30"
-                            Command="{Binding IrNuevaTareaCommand}"/>
-
+                <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
+                    <Button ImageSource="mas3.png" Command="{Binding IrNuevaTareaCommand}" BackgroundColor="Transparent" MaximumHeightRequest="65" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="3"
-                                     VerticalOptions="Center">
-
-                    <Button Text="🔔"
-                            FontSize="24"
-                            BackgroundColor="Transparent"/>
+                <VerticalStackLayout Grid.Column="3" VerticalOptions="Center">
+                    <Button ImageSource="campana1.png" Command="{Binding IrRecordatoriosTodosCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="4"
-                                     VerticalOptions="Center">
-
-                    <Button Text="⚙"
-                            Command="{Binding IrAjustesCommand}"                        
-                            FontSize="24"
-                            BackgroundColor="Transparent"/>
+                <VerticalStackLayout Grid.Column="4" VerticalOptions="Center">
+                    <Button ImageSource="ajustes1.png" Command="{Binding IrAjustesCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
             </Grid>
-
         </Border>
 
     </Grid>

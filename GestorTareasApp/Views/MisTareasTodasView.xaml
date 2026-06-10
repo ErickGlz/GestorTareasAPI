@@ -23,7 +23,7 @@
         <Grid ColumnDefinitions="*,*,*" Grid.Row="1" Padding="5" ColumnSpacing="5">
 
             <Button Text="Todas"
-
+                    Command="{Binding IrTodasCommand}"
                     Grid.Column="0"
                     BackgroundColor="#686EE4"
                     TextColor="White"
@@ -33,6 +33,7 @@
                     FontSize="14"
                     BorderWidth=".5"
                     FontAttributes="Bold"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
                     MaximumHeightRequest="35"/>
@@ -47,6 +48,7 @@
                     CornerRadius="20"
                     FontSize="14"
                     BorderWidth=".5"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
                     MaximumHeightRequest="35"/>
@@ -61,6 +63,7 @@
                     CornerRadius="20"
                     FontSize="14"
                     BorderWidth=".5"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
                     MaximumHeightRequest="35"/>
@@ -259,7 +262,7 @@
             </Border.Shadow>
             <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
                 <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                    <Button ImageSource="menu2.png" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+                    <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                     <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
