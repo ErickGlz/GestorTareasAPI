@@ -66,15 +66,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Remove="Resources\Images\ajustes1.png" />
-	  <MauiImage Remove="Resources\Images\ajustes2.png" />
-	  <MauiImage Remove="Resources\Images\calendario1.png" />
-	  <MauiImage Remove="Resources\Images\calendario2.png" />
-	  <MauiImage Remove="Resources\Images\campana1.png" />
-	  <MauiImage Remove="Resources\Images\campana2.png" />
-	  <MauiImage Remove="Resources\Images\mas3.png" />
-	  <MauiImage Remove="Resources\Images\menu1.png" />
-	  <MauiImage Remove="Resources\Images\menu2.png" />
+	  <None Remove="Resources\Images\ajustes1.png" />
+	  <None Remove="Resources\Images\ajustes2.png" />
+	  <None Remove="Resources\Images\calendario1.png" />
+	  <None Remove="Resources\Images\calendario2.png" />
+	  <None Remove="Resources\Images\campana1.png" />
+	  <None Remove="Resources\Images\campana2.png" />
+	  <None Remove="Resources\Images\mas3.png" />
+	  <None Remove="Resources\Images\menu1.png" />
+	  <None Remove="Resources\Images\menu2.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -125,33 +125,33 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Resources\Images\ajustes1.png">
+	  <MauiImage Update="Resources\Images\ajustes1.png">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\ajustes2.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\ajustes2.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\calendario1.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\calendario1.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\calendario2.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\calendario2.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\campana1.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\campana1.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\campana2.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\campana2.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\mas3.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\mas3.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\menu1.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\menu1.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Resources\Images\menu2.png">
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\menu2.png">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+	  </MauiImage>
 	</ItemGroup>
 
 </Project>
