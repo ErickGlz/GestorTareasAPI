@@ -69,7 +69,11 @@
             </Border.Shadow>
             <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
                 <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+<<<<<<< HEAD
                     <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+=======
+                    <Button ImageSource="menu1.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+>>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                     <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
@@ -81,7 +85,11 @@
                     <Button ImageSource="campana1.png" Command="{Binding IrRecordatoriosTodosCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="4" VerticalOptions="Center">
+<<<<<<< HEAD
                     <Button ImageSource="ajustes1.png" Command="{Binding IrAjustesCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+=======
+                    <Button ImageSource="ajustes2.png" Command="{Binding IrAjustesCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+>>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
                 </VerticalStackLayout>
             </Grid>
         </Border>

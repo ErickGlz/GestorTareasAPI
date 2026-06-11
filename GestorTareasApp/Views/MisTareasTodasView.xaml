@@ -22,7 +22,7 @@
         <Grid ColumnDefinitions="*,*,*" Grid.Row="1" Padding="5" ColumnSpacing="5">
 
             <Button Text="Todas"
-
+                    Command="{Binding IrTodasCommand}"
                     Grid.Column="0"
                     BackgroundColor="#686EE4"
                     TextColor="White"
@@ -32,6 +32,7 @@
                     FontSize="14"
                     BorderWidth=".5"
                     FontAttributes="Bold"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
                     MaximumHeightRequest="35"/>
@@ -46,6 +47,7 @@
                     CornerRadius="20"
                     FontSize="14"
                     BorderWidth=".5"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
                     MaximumHeightRequest="35"/>
@@ -60,6 +62,7 @@
                     CornerRadius="20"
                     FontSize="14"
                     BorderWidth=".5"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
                     MaximumHeightRequest="35"/>

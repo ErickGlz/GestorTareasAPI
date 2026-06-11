@@ -30,9 +30,11 @@
                     FontSize="14"
                     BorderWidth=".5"
                     FontAttributes="Bold"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
-                    MaximumHeightRequest="35"/>
+                    MaximumHeightRequest="35"
+                    Command="{Binding IrRecordatoriosProximosCommand}"/>
 
             <Button Text="Todos"
                     Grid.Column="1"
@@ -43,6 +45,7 @@
                     CornerRadius="20"
                     FontSize="14"
                     BorderWidth=".5"
+                    VerticalOptions="Center"
                     Margin="0"
                     Padding="0"
                     MaximumHeightRequest="35"
@@ -395,13 +398,21 @@
             </VerticalStackLayout>
 
         </ScrollView>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
         <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3" VerticalOptions="End" Padding="0,0,0,10" BackgroundColor="#FDFDFD">
             <Border.Shadow>
                 <Shadow Brush="Black" Offset="5,5" Opacity="0.1"></Shadow>
             </Border.Shadow>
             <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
                 <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+<<<<<<< HEAD
                     <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+=======
+                    <Button ImageSource="menu1.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+>>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                     <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
@@ -410,7 +421,11 @@
                     <Button ImageSource="mas3.png" Command="{Binding IrNuevaTareaCommand}" BackgroundColor="Transparent" MaximumHeightRequest="65" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="3" VerticalOptions="Center">
+<<<<<<< HEAD
                     <Button ImageSource="campana1.png" Command="{Binding IrRecordatoriosTodosCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+=======
+                    <Button ImageSource="campana2.png" Command="{Binding IrRecordatoriosTodosCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+>>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="4" VerticalOptions="Center">
                     <Button ImageSource="ajustes1.png" Command="{Binding IrAjustesCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
