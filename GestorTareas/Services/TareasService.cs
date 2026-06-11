@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using GestorTareas.DTOs.Tareas;
+using GestorTareasAPI.Models.DTOs;
 using GestorTareasAPI.Models.Entities;
 using GestorTareasAPI.Repositories;
 

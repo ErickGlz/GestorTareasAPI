@@ -2,9 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GestorTareasApp.Views.RecordatoriosProximosView"
-                          xmlns:models="clr-namespace:GestorTareasApp.Models"
-xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
-             Title="RecordatoriosProximosView">
+             xmlns:models="clr-namespace:GestorTareasApp.Models"
+             xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
+             Title="RecordatoriosProximosView"  BackgroundColor="#FAF9FE" Shell.NavBarIsVisible="False">
     <Grid RowDefinitions="auto,auto,*,auto">
 
         <Label Text="Recordatorios"
@@ -226,7 +226,7 @@ xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
                                             Margin="0"
                                             Padding="0"
                                             FontSize="20"
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=IrEditarTareaCommand}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=VerTareaCommand}"
                                             CommandParameter="{Binding .}"/>
 
                                 </Grid>
@@ -395,76 +395,27 @@ xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
             </VerticalStackLayout>
 
         </ScrollView>
-
-        <Border StrokeThickness=".1"
-                Stroke="#D8DADE"
-                Grid.Row="3"
-                VerticalOptions="End"
-                Padding="0,0,0,10"
-                BackgroundColor="#FDFDFD">
-
+        <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3" VerticalOptions="End" Padding="0,0,0,10" BackgroundColor="#FDFDFD">
             <Border.Shadow>
-                <Shadow Brush="Black"
-                        Offset="5,5"
-                        Opacity="0.1"/>
+                <Shadow Brush="Black" Offset="5,5" Opacity="0.1"></Shadow>
             </Border.Shadow>
-
-            <Grid ColumnDefinitions="*,*,*,*,*"
-                  VerticalOptions="Center">
-
-                <VerticalStackLayout Grid.Column="0"
-                                     VerticalOptions="Center">
-
-                    <Button ImageSource="menu1.png"
-                            BackgroundColor="Transparent"
-                            MaximumHeightRequest="50"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"/>
+            <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
+                <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                    <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="1"
-                                     VerticalOptions="Center">
-
-                    <Button ImageSource="calendario1.png"
-                            BackgroundColor="Transparent"
-                            MaximumHeightRequest="50"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                    <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="2"
-                                     VerticalOptions="Center">
-
-                    <Button ImageSource="mas3.png"
-                            BackgroundColor="Transparent"
-                            MaximumHeightRequest="65"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"
-                            Command="{Binding IrNuevaTareaCommand}"/>
+                <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
+                    <Button ImageSource="mas3.png" Command="{Binding IrNuevaTareaCommand}" BackgroundColor="Transparent" MaximumHeightRequest="65" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="3"
-                                     VerticalOptions="Center">
-
-                    <Button ImageSource="campana2.png"
-                            BackgroundColor="Transparent"
-                            MaximumHeightRequest="50"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="3" VerticalOptions="Center">
+                    <Button ImageSource="campana1.png" Command="{Binding IrRecordatoriosTodosCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
-                <VerticalStackLayout Grid.Column="4"
-                                     VerticalOptions="Center">
-
-                    <Button ImageSource="ajustes1.png"
-                            BackgroundColor="Transparent"
-                            MaximumHeightRequest="50"
-                            VerticalOptions="Center"
-                            HorizontalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="4" VerticalOptions="Center">
+                    <Button ImageSource="ajustes1.png" Command="{Binding IrAjustesCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
-
             </Grid>
-
         </Border>
 
     </Grid>

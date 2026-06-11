@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GestorTareas.DTOs.Tareas;
+using GestorTareasAPI.Models.DTOs;
 
 namespace GestorTareasAPI.Validators
 {

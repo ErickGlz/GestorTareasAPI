@@ -14,4 +14,6 @@ public partial class Usuarios
     public string Contrasena { get; set; } = null!;
 
     public DateTime FechaRegistro { get; set; }
+
+    public virtual ICollection<Refreshtokens> Refreshtokens { get; set; } = new List<Refreshtokens>();
 }

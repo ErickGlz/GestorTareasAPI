@@ -5,8 +5,7 @@
              xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
              xmlns:models="clr-namespace:GestorTareasApp.Models"
              Title="MisTareasTodasView"
-              Shell.NavBarIsVisible="False"
-             BackgroundColor="#FAF9FE">
+              BackgroundColor="#FAF9FE" Shell.NavBarIsVisible="False">
 
 
 
@@ -259,7 +258,7 @@
             </Border.Shadow>
             <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
                 <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-                    <Button ImageSource="menu2.png" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
+                    <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                     <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
