@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GestorTareasAPI.Models.DTOs;
+using GestorTareasAPI.DTOs.Tareas;
 using GestorTareasAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -54,26 +54,17 @@ namespace GestorTareasAPI.Controllers
                 return BadRequest(validacion.Errors);
             }
 
-            var resultado = await authService.Login(dto);
+            var token = await authService.Login(dto);
 
-            if (resultado == null)
+            if (token == null)
             {
                 return Unauthorized("Correo o contraseña incorrectos");
             }
 
-            return Ok(resultado);
-        }
-        [HttpPost("refresh")]
-        public async Task<IActionResult> Refresh(RefreshTokenDTO dto)
-        {
-            var resultado = await authService.Refresh(dto.RefreshToken);
-
-            if (resultado == null)
+            return Ok(new
             {
-                return Unauthorized("Refresh Token inválido o expirado");
-            }
-
-            return Ok(resultado);
+                Token = token
+            });
         }
     }
 }

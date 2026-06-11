@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using GestorTareasAPI.Models.DTOs;
+using GestorTareas.DTOs.Tareas;
 using GestorTareasAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,31 +20,18 @@ namespace GestorTareasAPI.Controllers
             this.service = service;
         }
 
-        private int? GetUsuarioId()
-        {
-            var claim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-            if (claim == null)
-                return null;
-
-            if (!int.TryParse(claim.Value, out int usuarioId))
-                return null;
-
-            return usuarioId;
-        }
-
         [HttpGet]
         public IActionResult GetTareas()
         {
-            var usuarioId = GetUsuarioId();
+            var usuarioId = int.Parse(
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            if (usuarioId == null)
-                return Unauthorized();
-
-            var tareas = service.GetAll(usuarioId.Value);
+            var tareas = service.GetAll(usuarioId);
 
             if (!tareas.Any())
+            {
                 return NotFound();
+            }
 
             return Ok(tareas);
         }
@@ -52,36 +39,35 @@ namespace GestorTareasAPI.Controllers
         [HttpGet("{id}")]
         public IActionResult GetTarea(int id)
         {
-            var usuarioId = GetUsuarioId();
+            var usuarioId = int.Parse(
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            if (usuarioId == null)
-                return Unauthorized();
-
-            var tarea = service.GetById(id, usuarioId.Value);
+            var tarea = service.GetById(id, usuarioId);
 
             if (tarea == null)
+            {
                 return NotFound();
+            }
 
             return Ok(tarea);
         }
-
         [HttpPost]
         public IActionResult CrearTarea(CrearTareaDTO dto)
         {
             try
             {
-                var usuarioId = GetUsuarioId();
+                var usuarioId = int.Parse(
+                    User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-                if (usuarioId == null)
-                    return Unauthorized();
-
-                service.Insert(dto, usuarioId.Value);
+                service.Insert(dto, usuarioId);
 
                 return Ok();
             }
             catch (ValidationException ex)
             {
-                return BadRequest(ex.Errors.Select(x => x.ErrorMessage));
+                return BadRequest(
+                    ex.Errors.Select(x => x.ErrorMessage)
+                );
             }
             catch (Exception ex)
             {
@@ -92,15 +78,15 @@ namespace GestorTareasAPI.Controllers
         [HttpPut]
         public IActionResult EditarTarea(EditarTareaDTO dto)
         {
-            var usuarioId = GetUsuarioId();
+            var usuarioId = int.Parse(
+       User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            if (usuarioId == null)
-                return Unauthorized();
-
-            var resultado = service.Update(dto, usuarioId.Value);
+            var resultado = service.Update(dto, usuarioId);
 
             if (!resultado)
+            {
                 return NotFound();
+            }
 
             return Ok();
         }
@@ -108,15 +94,15 @@ namespace GestorTareasAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult EliminarTarea(int id)
         {
-            var usuarioId = GetUsuarioId();
+            var usuarioId = int.Parse(
+      User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-            if (usuarioId == null)
-                return Unauthorized();
-
-            var resultado = service.Delete(id, usuarioId.Value);
+            var resultado = service.Delete(id, usuarioId);
 
             if (!resultado)
+            {
                 return NotFound();
+            }
 
             return Ok();
         }

@@ -9,11 +9,8 @@ namespace GestorTareasApp.Services
     {
         public async Task MostrarToast(string mensaje)
         {
-            await MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                var toast = Toast.Make(mensaje);
-                return toast.Show();
-            });
+            var toast = Toast.Make(mensaje);
+            await toast.Show();
         }
     }
 }

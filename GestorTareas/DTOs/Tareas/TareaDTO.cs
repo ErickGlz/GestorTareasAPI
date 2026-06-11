@@ -1,4 +1,4 @@
-﻿namespace GestorTareasAPI.Models.DTOs
+﻿namespace GestorTareas.DTOs.Tareas
 {
     public class TareaDTO
     {

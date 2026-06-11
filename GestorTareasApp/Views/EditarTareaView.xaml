@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GestorTareasApp.Views.EditarTareaView"
-             Title="EditarTareaView"  BackgroundColor="#FAF9FE" Shell.NavBarIsVisible="False">
+             Title="EditarTareaView">
     <ScrollView>
 
         <VerticalStackLayout Margin="0,5,0,20"

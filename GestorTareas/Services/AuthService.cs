@@ -1,10 +1,10 @@
-﻿using GestorTareasAPI.Models.Entities;
+﻿using GestorTareasAPI.DTOs.Tareas;
+using GestorTareasAPI.Models.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using GestorTareasAPI.Models.DTOs;
 
 namespace GestorTareasAPI.Services
 {
@@ -44,7 +44,7 @@ namespace GestorTareasAPI.Services
             return true;
         }
 
-        public async Task<LoginResponseDTO?> Login(LoginDTO dto)
+        public async Task<string?> Login(LoginDTO dto)
         {
             var usuario = await context.Usuarios
                 .FirstOrDefaultAsync(x =>
@@ -56,65 +56,10 @@ namespace GestorTareasAPI.Services
 
             var claims = new[]
             {
-            new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-            new Claim(ClaimTypes.Name, usuario.Nombre),
-            new Claim(ClaimTypes.Email, usuario.Correo)
+                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                new Claim(ClaimTypes.Name, usuario.Nombre),
+                new Claim(ClaimTypes.Email, usuario.Correo)
             };
-
-                var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
-
-                var credenciales = new SigningCredentials(
-                key,
-                SecurityAlgorithms.HmacSha256);
-
-                var jwt = new JwtSecurityToken(
-                issuer: configuration["Jwt:Issuer"],
-                audience: configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(5),
-                signingCredentials: credenciales);
-
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            var refreshToken = Guid.NewGuid().ToString();
-
-            context.Refreshtokens.Add(new Refreshtokens
-            {
-                UsuarioId = usuario.Id,
-                Token = refreshToken,
-                Expiration = DateTime.Now.AddDays(7),
-                Revoked = false
-            });
-
-            await context.SaveChangesAsync();
-
-            return new LoginResponseDTO
-            {
-                Token = token,
-                RefreshToken = refreshToken
-            };
-        }
-        public async Task<LoginResponseDTO?> Refresh(string refreshToken)
-        {
-            var tokenGuardado = await context.Refreshtokens
-                .Include(x => x.Usuario)
-                .FirstOrDefaultAsync(x =>
-                    x.Token == refreshToken &&
-                    !x.Revoked &&
-                    x.Expiration > DateTime.Now);
-
-            if (tokenGuardado == null)
-                return null;
-
-            var usuario = tokenGuardado.Usuario;
-
-            var claims = new[]
-            {
-        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-        new Claim(ClaimTypes.Name, usuario.Nombre),
-        new Claim(ClaimTypes.Email, usuario.Correo)
-    };
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
@@ -123,20 +68,14 @@ namespace GestorTareasAPI.Services
                 key,
                 SecurityAlgorithms.HmacSha256);
 
-            var jwt = new JwtSecurityToken(
+            var token = new JwtSecurityToken(
                 issuer: configuration["Jwt:Issuer"],
                 audience: configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: credenciales);
 
-            var nuevoToken = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            return new LoginResponseDTO
-            {
-                Token = nuevoToken,
-                RefreshToken = refreshToken
-            };
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

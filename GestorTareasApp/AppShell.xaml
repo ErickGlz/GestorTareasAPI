@@ -11,20 +11,13 @@
     Title="GestorTareasApp">
 
 
-    <ShellContent
-      ContentTemplate="{DataTemplate views:LoginView}"
-      Route="LoginView" />
+   
+            <ShellContent
+                ContentTemplate="{DataTemplate views:MisTareasTodasView}"
+                Route="MisTareasTodasView" />
 
-    <ShellContent
-   ContentTemplate="{DataTemplate views:RegistrarView}"
-   Route="IrRegistrarView" />
-
-    <ShellContent
-      ContentTemplate="{DataTemplate views:MisTareasTodasView}"
-      Route="MisTareasTodasView" />
-
-
-    <ShellContent
+        
+            <ShellContent
                 ContentTemplate="{DataTemplate views:NuevaTareaView}"
                 Route="NuevaTareaView" />
     <ShellContent

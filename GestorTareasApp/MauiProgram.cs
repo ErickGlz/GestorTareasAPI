@@ -3,7 +3,6 @@ using GestorTareasApp.Services;
 using GestorTareasApp.ViewModels;
 using GestorTareasApp.Views;
 using Microsoft.Extensions.Logging;
-using Plugin.LocalNotification;
 
 namespace GestorTareasApp
 {
@@ -14,7 +13,6 @@ namespace GestorTareasApp
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -22,32 +20,29 @@ namespace GestorTareasApp
                 });
             builder.Services.AddSingleton(new HttpClient
             {
-                BaseAddress = new Uri("https://c5720zrx-7267.usw3.devtunnels.ms/")
+                BaseAddress = new Uri("https://localhost:7267/")
             });
             builder.UseMauiApp<App>()
                 .UseMauiCommunityToolkit();
             builder.Services.AddSingleton<NotificacionesService>();
 
             builder.Services.AddSingleton<TareasService>();
-            builder.Services.AddSingleton<AuthService>();
 
             builder.Services.AddSingleton<TareasViewModel>();
-            builder.Services.AddTransient<LoginViewModel>();
-            builder.Services.AddTransient<MisTareasTodasView>();
+
+            builder.Services.AddSingleton<MisTareasTodasView>();
 
             builder.Services.AddTransient<NuevaTareaView>();
-            builder.Services.AddTransient<MisTareasPendientesView>();
-            builder.Services.AddTransient<MisTareasCompletadasView>();
-            builder.Services.AddTransient<RecordatoriosTodosView>();
-            builder.Services.AddTransient<RecordatoriosProximosView>();
-            builder.Services.AddTransient<CalendarioView>();
-            builder.Services.AddTransient<VerTareaView>();
-            builder.Services.AddTransient<EditarTareaView>();
-            builder.Services.AddTransient<EliminarTareaView>();
-            builder.Services.AddTransient<AjustesView>();
+            builder.Services.AddSingleton<MisTareasPendientesView>();
+            builder.Services.AddSingleton<MisTareasCompletadasView>();
+            builder.Services.AddSingleton<RecordatoriosTodosView>();
+            builder.Services.AddSingleton<RecordatoriosProximosView>();
+            builder.Services.AddSingleton<CalendarioView>();
+            builder.Services.AddSingleton<VerTareaView>();
+            builder.Services.AddSingleton<EditarTareaView>();
+            builder.Services.AddSingleton<EliminarTareaView>();
+            builder.Services.AddSingleton<AjustesView>();
 
-            builder.Services.AddTransient<LoginView>();
-            builder.Services.AddTransient<RegistrarView>();
 
 #if DEBUG
             builder.Logging.AddDebug();

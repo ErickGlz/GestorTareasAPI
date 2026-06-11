@@ -13,7 +13,7 @@ namespace GestorTareasAPI.Repositories
 
         public IEnumerable<T> GetAll()
         {
-            return Context.Set<T>().ToList();
+            return Context.Set<T>();
         }
 
         public T? Get(object id)
