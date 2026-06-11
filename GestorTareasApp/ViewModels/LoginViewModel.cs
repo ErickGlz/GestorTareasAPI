@@ -28,6 +28,16 @@ namespace GestorTareasApp.ViewModels
         [RelayCommand]
         public async Task IniciarSesion()
         {
+            var profiles = Connectivity.Current.ConnectionProfiles;
+            if (!profiles.Contains(ConnectionProfile.WiFi) &&
+                !profiles.Contains(ConnectionProfile.Cellular))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Sin conexión",
+                    "No tienes conexión a Internet",
+                    "Aceptar");
+                return;
+            }
             var login = new LoginDTO
             {
                 Correo = Correo,
@@ -64,6 +74,16 @@ namespace GestorTareasApp.ViewModels
         [RelayCommand]
         public async Task Registrarse()
         {
+            var profiles = Connectivity.Current.ConnectionProfiles;
+            if (!profiles.Contains(ConnectionProfile.WiFi) &&
+                !profiles.Contains(ConnectionProfile.Cellular))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Sin conexión",
+                    "No tienes conexión a Internet",
+                    "Aceptar");
+                return;
+            }
             var registro = new RegistroDTO
             {
                 Nombre = Nombre,

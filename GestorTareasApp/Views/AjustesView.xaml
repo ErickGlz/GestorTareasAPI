@@ -23,32 +23,7 @@
                       Grid.Row="0"
                       ColumnSpacing="4">
 
-                    <Image Source="campana1.png"
-                           HeightRequest="25"
-                           Grid.Column="0"
-                           Margin="10,0,4,0"
-                           VerticalOptions="Center"/>
-
-                    <Label Text="Notificaciones"
-                           TextColor="Black"
-                           Grid.Column="1"
-                           FontSize="20"
-                           Margin="0,0,10,0"
-                           VerticalTextAlignment="Center"/>
-
-                    <Label Text="Activadas"
-                           TextColor="DarkGray"
-                           Grid.Column="2"
-                           FontSize="16"
-                           Margin="0,0,4,0"
-                           VerticalTextAlignment="Center"
-                           HorizontalTextAlignment="End"/>
-
-                    <Switch Grid.Column="3"
-                            Margin="0,0,10,0"
-                            OnColor="#6970E6"
-                            ThumbColor="LightGray"
-                            IsToggled="{Binding NotificacionesActivadas}" />
+                   
 
                 </Grid>
 
@@ -69,11 +44,8 @@
             </Border.Shadow>
             <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
                 <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-<<<<<<< HEAD
                     <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
-=======
-                    <Button ImageSource="menu1.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
->>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
+
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                     <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
@@ -85,11 +57,8 @@
                     <Button ImageSource="campana1.png" Command="{Binding IrRecordatoriosTodosCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="4" VerticalOptions="Center">
-<<<<<<< HEAD
                     <Button ImageSource="ajustes1.png" Command="{Binding IrAjustesCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
-=======
-                    <Button ImageSource="ajustes2.png" Command="{Binding IrAjustesCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
->>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
+
                 </VerticalStackLayout>
             </Grid>
         </Border>

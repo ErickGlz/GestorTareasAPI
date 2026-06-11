@@ -144,7 +144,7 @@
                                    FontSize="14"
                                    FontFamily="open sans"/>
 
-                            <Label Text="{Binding FechaCreacion, StringFormat='{0:dd MMM yyyy}'}"
+                            <Label Text="{Binding FechaLimite, StringFormat='{0:dd MMM yyyy}'}"
                                    Grid.Column="1"
                                    Grid.Row="2"
                                    TextColor="DarkGray"

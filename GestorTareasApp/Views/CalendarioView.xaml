@@ -147,7 +147,7 @@
 
                             <Label Grid.Column="1"
                                    Grid.Row="2"
-                                   Text="{Binding FechaCreacion, StringFormat='{0:dd/MM/yyyy}'}"
+                                   Text="{Binding FechaLimite, StringFormat='{0:dd MMM yyyy}'}"
                                    TextColor="DarkGray"
                                    FontSize="12"/>
 
@@ -230,36 +230,26 @@
         </CollectionView>
 
         <ActivityIndicator       
-<<<<<<< HEAD
         Grid.RowSpan="4"
         IsVisible="{Binding IsLoading}"
         IsRunning="{Binding IsLoading}"
         VerticalOptions="Center"
         HorizontalOptions="Center"/>
-=======
- Grid.RowSpan="4"
- IsVisible="{Binding IsLoading}"
- IsRunning="{Binding IsLoading}"
- VerticalOptions="Center"
- HorizontalOptions="Center"/>
->>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
+
         <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3" VerticalOptions="End" Padding="0,0,0,10" BackgroundColor="#FDFDFD">
             <Border.Shadow>
                 <Shadow Brush="Black" Offset="5,5" Opacity="0.1"></Shadow>
             </Border.Shadow>
             <Grid ColumnDefinitions="*,*,*,*,*" VerticalOptions="Center">
                 <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
-<<<<<<< HEAD
+
                     <Button ImageSource="menu2.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                     <Button ImageSource="calendario1.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
-=======
-                    <Button ImageSource="menu1.png" Command="{Binding IrTodasCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
                     <Button ImageSource="calendario2.png" Command="{Binding IrCalendarioCommand}" BackgroundColor="Transparent" MaximumHeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center"></Button>
->>>>>>> 20619e81751a086a5cee27b38c938389a5078a15
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="2" VerticalOptions="Center">
                     <Button ImageSource="mas3.png" Command="{Binding IrNuevaTareaCommand}" BackgroundColor="Transparent" MaximumHeightRequest="65" VerticalOptions="Center" HorizontalOptions="Center"></Button>

@@ -64,7 +64,6 @@ namespace GestorTareasAPI.Services
             tarea.FechaLimite = dto.FechaLimite;
             tarea.Prioridad = dto.Prioridad;
             tarea.Completada = dto.Completada;
-            tarea.ImagenUrl = dto.ImagenUrl;
 
             Repository.Update(tarea);
 

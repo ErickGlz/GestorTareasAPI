@@ -14,7 +14,6 @@
 
         public bool Completada { get; set; }
 
-        public string ImagenUrl { get; set; } = null!;
 
         public DateTime FechaCreacion { get; set; }
     }
@@ -29,7 +28,6 @@
 
         public string Prioridad { get; set; } = null!;
 
-        public string ImagenUrl { get; set; } = null!;
     }
 
     public class EditarTareaDTO
@@ -46,6 +44,5 @@
 
         public bool Completada { get; set; }
 
-        public string ImagenUrl { get; set; } = null!;
     }
 }

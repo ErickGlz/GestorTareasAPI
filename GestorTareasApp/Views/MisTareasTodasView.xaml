@@ -254,6 +254,25 @@
         IsRunning="{Binding IsLoading}"
         VerticalOptions="Center"
         HorizontalOptions="Center"/>
+        <VerticalStackLayout Grid.Row="2"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Center"
+                     IsVisible="{Binding SinConexion}"
+                     Spacing="10">
+
+            <Label Text="Sin conexión a Internet"
+           TextColor="Gray"
+           FontSize="16"
+           HorizontalTextAlignment="Center"/>
+
+            <Button Text="Reintentar"
+            Command="{Binding CargarTareasCommand}"
+            BackgroundColor="#6970E6"
+            TextColor="White"
+            CornerRadius="20"
+            Padding="20,8"/>
+
+        </VerticalStackLayout>
 
         <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3" VerticalOptions="End" Padding="0,0,0,10" BackgroundColor="#FDFDFD">
             <Border.Shadow>

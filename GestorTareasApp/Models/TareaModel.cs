@@ -18,8 +18,6 @@ namespace GestorTareasApp.Models
 
         public bool Completada { get; set; }
 
-        public string ImagenUrl { get; set; }
-
         public DateTime FechaCreacion { get; set; }
     }
 }

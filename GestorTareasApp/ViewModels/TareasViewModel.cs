@@ -18,7 +18,9 @@ namespace GestorTareasApp.ViewModels
         public ObservableCollection<TareaModel> TareasPendientes { get; set; } = new();
         public ObservableCollection<TareaModel> TareasCompletadas { get; set; } = new();
         public ObservableCollection<TareaModel> RecordatoriosTodos { get; set; } = new();
-        public ObservableCollection<TareaModel> RecordatoriosProximos { get; set; } = new();
+        public ObservableCollection<TareaModel> RecordatoriosHoy { get; set; } = new();
+        public ObservableCollection<TareaModel> RecordatoriosSemana { get; set; } = new();
+        public ObservableCollection<TareaModel> RecordatoriosFuturos { get; set; } = new();
         public ObservableCollection<TareaModel> TareasCalendario { get; set; } = new();
 
         public List<string> Prioridades { get; set; } =
@@ -31,11 +33,10 @@ namespace GestorTareasApp.ViewModels
         [ObservableProperty] private bool isLoading;
         [ObservableProperty] private bool notificacionesActivadas = true;
         [ObservableProperty] private string mensaje = "";
-        [ObservableProperty] private string imagenSeleccionada = "";
         [ObservableProperty] private DateTime fechaSeleccionada = DateTime.Today;
         [ObservableProperty] private TareaModel nuevaTarea = new();
         [ObservableProperty] private TareaModel tareaSeleccionada = new();
-
+        [ObservableProperty] private bool sinConexion;
         public TareasViewModel(
             TareasService service,
             NotificacionesService notificacionesService)
@@ -55,6 +56,14 @@ namespace GestorTareasApp.ViewModels
         {
             try
             {
+                if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+                {
+                    SinConexion = true;
+                    Mensaje = "Sin conexión a Internet";
+                    IsLoading = false;
+                    return;
+                }
+                SinConexion = false;
                 IsLoading = true;
 
                 var lista = await service.GetTareas();
@@ -66,7 +75,9 @@ namespace GestorTareasApp.ViewModels
                 TareasPendientes.Clear();
                 TareasCompletadas.Clear();
                 RecordatoriosTodos.Clear();
-                RecordatoriosProximos.Clear();
+                RecordatoriosHoy.Clear();
+                RecordatoriosSemana.Clear();
+                RecordatoriosFuturos.Clear();
 
                 foreach (var tarea in lista)
                 {
@@ -81,8 +92,15 @@ namespace GestorTareasApp.ViewModels
                     if (tarea.Completada)
                         TareasCompletadas.Add(tarea);
 
-                    if (tarea.FechaCreacion.Date <= DateTime.Today.AddDays(3))
-                        RecordatoriosProximos.Add(tarea);
+                    if (!tarea.Completada)
+                    {
+                        if (tarea.FechaLimite.Date == DateTime.Today)
+                            RecordatoriosHoy.Add(tarea);
+                        else if (tarea.FechaLimite.Date <= DateTime.Today.AddDays(7))
+                            RecordatoriosSemana.Add(tarea);
+                        else
+                            RecordatoriosFuturos.Add(tarea);
+                    }
                 }
 
                 FiltrarCalendario();
@@ -104,7 +122,7 @@ namespace GestorTareasApp.ViewModels
             foreach (var tarea in Tareas)
             {
                 if (tarea != null &&
-                    tarea.FechaCreacion.Date == FechaSeleccionada.Date)
+                    tarea.FechaLimite.Date == FechaSeleccionada.Date)
                 {
                     TareasCalendario.Add(tarea);
                 }
@@ -127,11 +145,9 @@ namespace GestorTareasApp.ViewModels
                     FechaLimite = tarea.FechaLimite,
                     Prioridad = tarea.Prioridad,
                     Completada = tarea.Completada,
-                    ImagenUrl = tarea.ImagenUrl,
                     FechaCreacion = tarea.FechaCreacion
                 };
 
-                ImagenSeleccionada = NuevaTarea.ImagenUrl ?? "";
 
                 await Shell.Current.GoToAsync("//EditarTareaView");
             }
@@ -180,7 +196,6 @@ namespace GestorTareasApp.ViewModels
         {
             Mensaje = "";
             NuevaTarea = new TareaModel();
-            ImagenSeleccionada = "";
 
             await Shell.Current.GoToAsync("//NuevaTareaView");
         }
@@ -262,11 +277,9 @@ namespace GestorTareasApp.ViewModels
                 FechaLimite = TareaSeleccionada.FechaLimite,
                 Prioridad = TareaSeleccionada.Prioridad,
                 Completada = TareaSeleccionada.Completada,
-                ImagenUrl = TareaSeleccionada.ImagenUrl,
                 FechaCreacion = TareaSeleccionada.FechaCreacion
             };
 
-            ImagenSeleccionada = NuevaTarea.ImagenUrl ?? "";
 
             await Shell.Current.GoToAsync("//EditarTareaView");
         }
@@ -274,6 +287,11 @@ namespace GestorTareasApp.ViewModels
         [RelayCommand]
         public async Task GuardarCambios()
         {
+            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            {
+                Mensaje = "Sin conexión a Internet";
+                return;
+            }
             if (string.IsNullOrWhiteSpace(NuevaTarea.Titulo))
             {
                 Mensaje = "Ingrese un título";
@@ -327,12 +345,16 @@ namespace GestorTareasApp.ViewModels
             }
 
             await CargarTareas();
+
+            await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
 
         [RelayCommand]
         public async Task CrearTarea()
         {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            var profiles = Connectivity.Current.ConnectionProfiles;
+            if (!profiles.Contains(ConnectionProfile.WiFi) &&
+                !profiles.Contains(ConnectionProfile.Cellular))
             {
                 Mensaje = "Sin conexión a Internet";
                 return;
@@ -366,48 +388,34 @@ namespace GestorTareasApp.ViewModels
                 return;
             }
 
-            // Crear la notificación SOLO cuando la tarea se guardó correctamente
-            var notification = new NotificationRequest
-            {
-                NotificationId = new Random().Next(1, 100000),
-                Title = "Recordatorio",
-                Description = $"La tarea '{NuevaTarea.Titulo}' está próxima a vencer.",
-                Schedule = new NotificationRequestSchedule
-                {
-                    NotifyTime = DateTime.Now.AddMinutes(1)
-                }
-            };
+            var permitido = await LocalNotificationCenter.Current.RequestNotificationPermission();
 
-            await LocalNotificationCenter.Current.Show(notification);
+            if (permitido)
+            {
+                var notification = new NotificationRequest
+                {
+                    NotificationId = new Random().Next(1, 100000),
+                    Title = "Recordatorio",
+                    Description = $"La tarea '{NuevaTarea.Titulo}' está próxima a vencer.",
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = DateTime.Now.AddSeconds(10)
+                    }
+                };
+
+                await LocalNotificationCenter.Current.Show(notification);
+            }
 
             await CargarTareas();
 
             NuevaTarea = new TareaModel();
-            ImagenSeleccionada = "";
 
             await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
 
-        [RelayCommand]
-        public async Task SeleccionarImagen()
-        {
-            var foto = await MediaPicker.PickPhotoAsync();
+       
 
-            if (foto != null)
-            {
-                ImagenSeleccionada = foto.FullPath;
-                NuevaTarea.ImagenUrl = foto.FullPath;
-            }
-        }
-
-        [RelayCommand]
-        public async Task CambiarNotificaciones()
-        {
-            await notificacionesService.MostrarToast(
-                NotificacionesActivadas
-                    ? "Notificaciones activadas"
-                    : "Notificaciones desactivadas");
-        }
+      
 
         [RelayCommand]
         public async Task CerrarSesion()

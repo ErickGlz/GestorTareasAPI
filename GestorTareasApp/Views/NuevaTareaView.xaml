@@ -123,38 +123,8 @@
                         SelectedItem="{Binding NuevaTarea.Prioridad}"/>
             </Border>
 
-            <Label Text="Imagen (opcional)"
-       TextColor="Black"
-       FontSize="16"
-       FontFamily="open sans"
-       Margin="12,10,10,4"/>
-
-            <Border Stroke="#E0E0E0"
-        StrokeThickness="1"
-        Padding="12"
-        Margin="12,0,12,20"
-        BackgroundColor="#FAFAFA">
-
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="6"/>
-                </Border.StrokeShape>
-
-                <VerticalStackLayout HorizontalOptions="Center"
-                         Spacing="6">
-
-                    <Image Source="{Binding ImagenSeleccionada}"
-               HeightRequest="120"
-               WidthRequest="120"
-               Aspect="AspectFill"/>
-
-                    <Button Text="Seleccionar imagen"
-                Command="{Binding SeleccionarImagenCommand}"
-                BackgroundColor="#6970E6"
-                TextColor="White"/>
-
-                </VerticalStackLayout>
-            </Border>
-
+           
+               
         </VerticalStackLayout>
     </ScrollView>
 
