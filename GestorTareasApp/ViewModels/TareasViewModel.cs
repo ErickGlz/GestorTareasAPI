@@ -399,7 +399,8 @@ namespace GestorTareasApp.ViewModels
                     Description = $"La tarea '{NuevaTarea.Titulo}' está próxima a vencer.",
                     Schedule = new NotificationRequestSchedule
                     {
-                        NotifyTime = DateTime.Now.AddSeconds(10)
+                        NotifyTime = DateTime.Now.AddMinutes(1)
+
                     }
                 };
 
