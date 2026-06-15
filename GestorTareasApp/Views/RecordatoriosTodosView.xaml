@@ -59,12 +59,19 @@ xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
             <CollectionView.ItemTemplate>
 
                 <DataTemplate x:DataType="models:TareaModel">
-
                     <Border StrokeThickness=".1"
-                            Margin="15,10,15,10"
-                            Padding="0"
-                            BackgroundColor="White"
-                            Stroke="#D8DADE">
+                        Margin="15,10,15,10"
+                        Padding="0"
+                        BackgroundColor="White"
+                        Stroke="#D8DADE">
+
+                        <Border.GestureRecognizers>
+
+                            <TapGestureRecognizer
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=VerTareaCommand}"
+                                CommandParameter="{Binding .}" />
+
+                        </Border.GestureRecognizers>
 
                         <Border.Shadow>
                             <Shadow Brush="Black"
@@ -231,11 +238,11 @@ xmlns:viewmodels="clr-namespace:GestorTareasApp.ViewModels"
 
         </CollectionView>
         <ActivityIndicator       
- Grid.RowSpan="4"
- IsVisible="{Binding IsLoading}"
- IsRunning="{Binding IsLoading}"
- VerticalOptions="Center"
- HorizontalOptions="Center"/>
+            Grid.RowSpan="4"
+            IsVisible="{Binding IsLoading}"
+            IsRunning="{Binding IsLoading}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"/>
         <Border StrokeThickness=".1" Stroke="#D8DADE" Grid.Row="3" VerticalOptions="End" Padding="0,0,0,10" BackgroundColor="#FDFDFD">
             <Border.Shadow>
                 <Shadow Brush="Black" Offset="5,5" Opacity="0.1"></Shadow>

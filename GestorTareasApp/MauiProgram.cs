@@ -22,10 +22,11 @@ namespace GestorTareasApp
                 });
             builder.Services.AddSingleton(new HttpClient
             {
-                BaseAddress = new Uri("https://c5720zrx-7267.usw3.devtunnels.ms/")
+                BaseAddress = new Uri("https://thinner-hedge-absently.ngrok-free.dev/")
             });
             builder.UseMauiApp<App>()
                 .UseMauiCommunityToolkit();
+
             builder.Services.AddSingleton<NotificacionesService>();
 
             builder.Services.AddSingleton<TareasService>();

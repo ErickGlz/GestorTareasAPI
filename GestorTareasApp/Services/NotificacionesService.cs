@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Alerts;
+﻿
+using CommunityToolkit.Maui.Alerts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +10,11 @@ namespace GestorTareasApp.Services
     {
         public async Task MostrarToast(string mensaje)
         {
-            await MainThread.InvokeOnMainThreadAsync(() =>
-            {
-                var toast = Toast.Make(mensaje);
-                return toast.Show();
-            });
+#if ANDROID
+            var context = Android.App.Application.Context;
+            Android.Widget.Toast.MakeText(context, mensaje, Android.Widget.ToastLength.Short)?.Show();
+#endif
+
         }
     }
 }

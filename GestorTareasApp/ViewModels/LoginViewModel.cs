@@ -64,6 +64,10 @@ namespace GestorTareasApp.ViewModels
                 "Inicio de sesión correcto",
                 "Aceptar");
 
+            var vm = IPlatformApplication.Current.Services.GetService<TareasViewModel>();
+            if (vm != null)
+                await vm.CargarTareas();
+
             await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
         [RelayCommand]

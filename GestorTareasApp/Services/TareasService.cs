@@ -61,6 +61,7 @@ namespace GestorTareasApp.Services
                     tarea.Descripcion,
                     tarea.FechaLimite,
                     tarea.Prioridad,
+                    tarea.ImagenUrl
                 };
 
                 var response = await httpClient.PostAsJsonAsync("api/tareas", dto);
@@ -87,6 +88,8 @@ namespace GestorTareasApp.Services
                     tarea.FechaLimite,
                     tarea.Prioridad,
                     tarea.Completada,
+                    tarea.ImagenUrl
+
                 };
 
                 var response = await httpClient.PutAsJsonAsync("api/tareas", dto);

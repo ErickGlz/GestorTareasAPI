@@ -46,6 +46,7 @@ namespace GestorTareasAPI.Services
             tarea.UsuarioId = usuarioId;
             tarea.FechaCreacion = DateTime.Now;
             tarea.Completada = false;
+            tarea.ImagenUrl = dto.ImagenUrl;
 
             Repository.Insert(tarea);
         }
@@ -64,6 +65,7 @@ namespace GestorTareasAPI.Services
             tarea.FechaLimite = dto.FechaLimite;
             tarea.Prioridad = dto.Prioridad;
             tarea.Completada = dto.Completada;
+            tarea.ImagenUrl = dto.ImagenUrl;
 
             Repository.Update(tarea);
 

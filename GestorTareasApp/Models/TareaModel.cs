@@ -18,6 +18,7 @@ namespace GestorTareasApp.Models
 
         public bool Completada { get; set; }
 
-        public DateTime FechaCreacion { get; set; }
+        public DateTime FechaCreacion { get; set; } = DateTime.Now;
+        public string? ImagenUrl { get; set; }
     }
 }

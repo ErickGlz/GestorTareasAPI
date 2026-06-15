@@ -37,6 +37,8 @@ namespace GestorTareasApp.ViewModels
         [ObservableProperty] private TareaModel nuevaTarea = new();
         [ObservableProperty] private TareaModel tareaSeleccionada = new();
         [ObservableProperty] private bool sinConexion;
+        [ObservableProperty]
+        private string imagenSeleccionada = "";
         public TareasViewModel(
             TareasService service,
             NotificacionesService notificacionesService)
@@ -44,7 +46,7 @@ namespace GestorTareasApp.ViewModels
             this.service = service;
             this.notificacionesService = notificacionesService;
 
-            _ = CargarTareas();
+            Task.Run(async () => await CargarTareas());
         }
 
         partial void OnFechaSeleccionadaChanged(DateTime value)
@@ -56,14 +58,16 @@ namespace GestorTareasApp.ViewModels
         {
             try
             {
-                if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+                var profiles = Connectivity.Current.ConnectionProfiles;
+                if (!profiles.Contains(ConnectionProfile.WiFi) &&
+                    !profiles.Contains(ConnectionProfile.Cellular))
                 {
-                    SinConexion = true;
-                    Mensaje = "Sin conexión a Internet";
-                    IsLoading = false;
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Sin conexión",
+                        "No tienes conexión a Internet",
+                        "Aceptar");
                     return;
                 }
-                SinConexion = false;
                 IsLoading = true;
 
                 var lista = await service.GetTareas();
@@ -197,7 +201,10 @@ namespace GestorTareasApp.ViewModels
             Mensaje = "";
             NuevaTarea = new TareaModel();
 
-            await Shell.Current.GoToAsync("//NuevaTareaView");
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                await Shell.Current.GoToAsync("//NuevaTareaView");
+            });
         }
 
         [RelayCommand]
@@ -213,6 +220,16 @@ namespace GestorTareasApp.ViewModels
         {
             try
             {
+                var profiles = Connectivity.Current.ConnectionProfiles;
+                if (!profiles.Contains(ConnectionProfile.WiFi) &&
+                    !profiles.Contains(ConnectionProfile.Cellular))
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Sin conexión",
+                        "No tienes conexión a Internet",
+                        "Aceptar");
+                    return;
+                }
                 if (tarea == null) return;
 
                 bool confirmar = await App.Current.MainPage.DisplayAlert(
@@ -242,6 +259,17 @@ namespace GestorTareasApp.ViewModels
         [RelayCommand]
         public async Task EliminarTareaSeleccionada()
         {
+
+            var profiles = Connectivity.Current.ConnectionProfiles;
+            if (!profiles.Contains(ConnectionProfile.WiFi) &&
+                !profiles.Contains(ConnectionProfile.Cellular))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Sin conexión",
+                    "No tienes conexión a Internet",
+                    "Aceptar");
+                return;
+            }
             if (TareaSeleccionada == null) return;
 
             bool confirmar = await App.Current.MainPage.DisplayAlert(
@@ -287,9 +315,14 @@ namespace GestorTareasApp.ViewModels
         [RelayCommand]
         public async Task GuardarCambios()
         {
-            if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+            var profiles = Connectivity.Current.ConnectionProfiles;
+            if (!profiles.Contains(ConnectionProfile.WiFi) &&
+                !profiles.Contains(ConnectionProfile.Cellular))
             {
-                Mensaje = "Sin conexión a Internet";
+                await Application.Current.MainPage.DisplayAlert(
+                    "Sin conexión",
+                    "No tienes conexión a Internet",
+                    "Aceptar");
                 return;
             }
             if (string.IsNullOrWhiteSpace(NuevaTarea.Titulo))
@@ -414,9 +447,19 @@ namespace GestorTareasApp.ViewModels
             await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
 
-       
 
-      
+
+        [RelayCommand]
+        public async Task SeleccionarImagen()
+        {
+            var foto = await MediaPicker.PickPhotoAsync();
+
+            if (foto != null)
+            {
+                ImagenSeleccionada = foto.FullPath;
+                NuevaTarea.ImagenUrl = foto.FullPath;
+            }
+        }
 
         [RelayCommand]
         public async Task CerrarSesion()
