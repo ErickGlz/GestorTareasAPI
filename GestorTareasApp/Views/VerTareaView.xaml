@@ -43,13 +43,14 @@
                             Command="{Binding IrEditarTareaCommand}"
                             CommandParameter="{Binding TareaSeleccionada}" />
                     <Button Text="Eliminar"
-                    Grid.Column="2"
-                     HeightRequest="30"
-                    WidthRequest="70"
-                    CornerRadius="10"
-                    TextColor="White"
-                    BackgroundColor="Red"
-                    FontAttributes="Bold"
+                            Grid.Column="2"
+                            HeightRequest="30"
+                            WidthRequest="70"
+                            CornerRadius="10"
+                            TextColor="White"
+                            BackgroundColor="Red"
+                            FontAttributes="Bold"
+                            Padding="0"
                     Command="{Binding EliminarTareaSeleccionadaCommand}" />
                 </Grid>
             </Border>

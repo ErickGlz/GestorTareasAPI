@@ -77,19 +77,43 @@
 
                 <DataTemplate x:DataType="models:TareaModel">
 
-                    <Border StrokeThickness=".1"
+                    <SwipeView>
+
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+
+                                <SwipeItem
+                                    Text="Editar"
+                                    BackgroundColor="#686EE4"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=IrEditarTareaCommand}"
+                                    CommandParameter="{Binding .}" />
+
+                                <SwipeItem
+                                    Text="Eliminar"
+                                    BackgroundColor="Red"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=EliminarTareaCommand}"
+                                    CommandParameter="{Binding .}" />
+
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+
+
+                        <Border StrokeThickness=".1"
                             Margin="15,10,15,10"
                             Padding="0"
                             BackgroundColor="White"
                             Stroke="#D8DADE">
-                        <Border.GestureRecognizers>
 
-                            <TapGestureRecognizer
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=VerTareaCommand}"
-                                CommandParameter="{Binding .}" />
+                            <Border.GestureRecognizers>
 
-                        </Border.GestureRecognizers>
-                        <Border.Shadow>
+                                <TapGestureRecognizer
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TareasViewModel}}, Path=VerTareaCommand}"
+                CommandParameter="{Binding .}" />
+
+                            </Border.GestureRecognizers>
+
+                            <Border.Shadow>
                             <Shadow Brush="Black"
                                     Offset="5,5"
                                     Opacity="0.1"/>
@@ -232,22 +256,22 @@
                             </Border>
 
                             <Button Text=">"
-        Grid.Column="2"
-        Grid.Row="1"
-        Grid.RowSpan="2"
-        VerticalOptions="Center"
-        TextColor="DarkGray"
-        Background="Transparent"
-        Margin="0"
-        Padding="0"
-        FontSize="20"
-        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}},
-                          Path=BindingContext.VerTareaCommand}"
-        CommandParameter="{Binding .}" />
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                Grid.RowSpan="2"
+                                VerticalOptions="Center"
+                                TextColor="DarkGray"
+                                Background="Transparent"
+                                Margin="0"
+                                Padding="0"
+                                FontSize="20"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}},
+                                            Path=BindingContext.VerTareaCommand}"
+                                            CommandParameter="{Binding .}" />
                         </Grid>
 
                     </Border>
-
+                    </SwipeView>
                 </DataTemplate>
 
             </CollectionView.ItemTemplate>

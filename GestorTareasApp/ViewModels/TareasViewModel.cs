@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GestorTareasApp.Models;
 using GestorTareasApp.Services;
@@ -46,7 +47,6 @@ namespace GestorTareasApp.ViewModels
             this.service = service;
             this.notificacionesService = notificacionesService;
 
-            Task.Run(async () => await CargarTareas());
         }
 
         partial void OnFechaSeleccionadaChanged(DateTime value)
@@ -62,10 +62,7 @@ namespace GestorTareasApp.ViewModels
                 if (!profiles.Contains(ConnectionProfile.WiFi) &&
                     !profiles.Contains(ConnectionProfile.Cellular))
                 {
-                    await Application.Current.MainPage.DisplayAlert(
-                        "Sin conexión",
-                        "No tienes conexión a Internet",
-                        "Aceptar");
+                    await notificacionesService.MostrarError("No tienes conexión a Internet");
                     return;
                 }
                 IsLoading = true;
@@ -111,7 +108,7 @@ namespace GestorTareasApp.ViewModels
             }
             catch (Exception ex)
             {
-                Mensaje = ex.Message;
+                await notificacionesService.MostrarError(ex.Message);
             }
             finally
             {
@@ -201,10 +198,8 @@ namespace GestorTareasApp.ViewModels
             Mensaje = "";
             NuevaTarea = new TareaModel();
 
-            await MainThread.InvokeOnMainThreadAsync(async () =>
-            {
-                await Shell.Current.GoToAsync("//NuevaTareaView");
-            });
+            await Shell.Current.GoToAsync("//NuevaTareaView");
+       
         }
 
         [RelayCommand]
@@ -319,10 +314,7 @@ namespace GestorTareasApp.ViewModels
             if (!profiles.Contains(ConnectionProfile.WiFi) &&
                 !profiles.Contains(ConnectionProfile.Cellular))
             {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Sin conexión",
-                    "No tienes conexión a Internet",
-                    "Aceptar");
+                await notificacionesService.MostrarError("No tienes conexión a Internet");
                 return;
             }
             if (string.IsNullOrWhiteSpace(NuevaTarea.Titulo))
@@ -349,7 +341,7 @@ namespace GestorTareasApp.ViewModels
             if (!resultado)
             {
                 Mensaje = "Error al actualizar tarea";
-                await notificacionesService.MostrarToast(Mensaje);
+                await notificacionesService.MostrarError(Mensaje);
                 return;
             }
 
@@ -358,7 +350,7 @@ namespace GestorTareasApp.ViewModels
             TareaSeleccionada = Tareas.FirstOrDefault(x => x.Id == NuevaTarea.Id);
 
             Mensaje = "Tarea actualizada correctamente";
-            await notificacionesService.MostrarToast(Mensaje);
+            await notificacionesService.MostrarSnackbar(Mensaje);
 
             await Shell.Current.GoToAsync("//VerTareaView");
         }
@@ -374,11 +366,12 @@ namespace GestorTareasApp.ViewModels
             if (!resultado)
             {
                 Mensaje = "Error al completar la tarea";
+                
                 return;
             }
 
             await CargarTareas();
-
+            await notificacionesService.MostrarSnackbar("Tarea marcada como completada");
             await Shell.Current.GoToAsync("//MisTareasTodasView");
         }
 
@@ -443,6 +436,7 @@ namespace GestorTareasApp.ViewModels
             await CargarTareas();
 
             NuevaTarea = new TareaModel();
+            await notificacionesService.MostrarSnackbar("Tarea creada correctamente");
 
             await Shell.Current.GoToAsync("//MisTareasTodasView");
         }

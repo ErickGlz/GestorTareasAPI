@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GestorTareasApp.Models.DTOs;
 using GestorTareasApp.Services;
@@ -11,10 +12,11 @@ namespace GestorTareasApp.ViewModels
     public partial class LoginViewModel:ObservableObject
     {
         private readonly AuthService authService;
-
-        public LoginViewModel(AuthService authService)
+        private readonly NotificacionesService notificacionesService;
+        public LoginViewModel(AuthService authService, NotificacionesService notificacionesService)
         {
             this.authService = authService;
+            this.notificacionesService = notificacionesService;
         }
         [ObservableProperty]
         private string? nombre;
@@ -32,10 +34,8 @@ namespace GestorTareasApp.ViewModels
             if (!profiles.Contains(ConnectionProfile.WiFi) &&
                 !profiles.Contains(ConnectionProfile.Cellular))
             {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Sin conexión",
-                    "No tienes conexión a Internet",
-                    "Aceptar");
+                await notificacionesService.MostrarError("No tienes conexión a Internet");
+
                 return;
             }
             var login = new LoginDTO
@@ -48,10 +48,7 @@ namespace GestorTareasApp.ViewModels
 
             if (resultado == null)
             {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Error",
-                    "Correo o contraseña incorrectos",
-                    "Aceptar");
+                await notificacionesService.MostrarSnackbar("Error al iniciar sesión");
 
                 return;
             }
@@ -59,10 +56,7 @@ namespace GestorTareasApp.ViewModels
             await SecureStorage.Default.SetAsync("token", resultado.Token);
             await SecureStorage.Default.SetAsync("refreshToken", resultado.RefreshToken);
 
-            await Application.Current.MainPage.DisplayAlert(
-                "Éxito",
-                "Inicio de sesión correcto",
-                "Aceptar");
+            await notificacionesService.MostrarSnackbar("inicio de sesion exitoso");
 
             var vm = IPlatformApplication.Current.Services.GetService<TareasViewModel>();
             if (vm != null)
@@ -82,10 +76,8 @@ namespace GestorTareasApp.ViewModels
             if (!profiles.Contains(ConnectionProfile.WiFi) &&
                 !profiles.Contains(ConnectionProfile.Cellular))
             {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Sin conexión",
-                    "No tienes conexión a Internet",
-                    "Aceptar");
+                await notificacionesService.MostrarError("No tienes conexión a Internet");
+
                 return;
             }
             var registro = new RegistroDTO
@@ -99,18 +91,12 @@ namespace GestorTareasApp.ViewModels
 
             if (!resultado)
             {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Error",
-                    "No fue posible registrar el usuario",
-                    "Aceptar");
+                await notificacionesService.MostrarSnackbar("Usuario Registrado correctamente");
 
                 return;
             }
 
-            await Application.Current.MainPage.DisplayAlert(
-                "Éxito",
-                "Usuario registrado correctamente",
-                "Aceptar");
+            await notificacionesService.MostrarSnackbar("Éxito, Usuario registrado correctamente");
 
             await Shell.Current.GoToAsync("//LoginView");
         }
